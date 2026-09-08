@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot name="scara" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<xacro:arg name="mode" default="mock"/>
+<xacro:arg name="description_share" default="$(find scara_description)"/>
+<xacro:arg name="controllers_file" default="$(find scara_bringup)/config/controllers.yaml"/>
+<xacro:property name="mode" value="$(arg mode)"/>
+<link name="world"/>
+<joint name="world_fixed" type="fixed"><parent link="world"/><child link="base_link"/></joint>
+<link name="base_link">
+<visual><geometry><mesh filename="file://$(arg description_share)/meshes/base_link.stl"/></geometry><material name="base_link_color"><color rgba="0.18 0.22 0.28 1"/></material></visual>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/base_link_collision_000.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/base_link_collision_001.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/base_link_collision_081.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/base_link_collision_082.stl"/></geometry></collision>
+<inertial><origin xyz="-0.08500000000000003 2.0816681711721685e-16 0.03850000000000008"/><mass value="1.5"/><inertia ixx="0.0031911250000000797" ixy="0" ixz="0" iyy="0.011991125000000054" iyz="0" izz="0.013700000000000032"/></inertial>
+</link>
+<link name="shoulder_link">
+<visual><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link.stl"/></geometry><material name="shoulder_link_color"><color rgba="0.65 0.68 0.72 1"/></material></visual>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_010.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_011.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_012.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_013.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_014.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_015.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_020.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_027.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_079.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_080.stl"/></geometry></collision>
+<inertial><origin xyz="-1.231653667943533e-15 -3.9170056087556304e-15 0.19100000000000006"/><mass value="1.2"/><inertia ixx="0.026640400000000355" ixy="0" ixz="0" iyy="0.02664040000000024" iyz="0" izz="0.0028800000000002227"/></inertial>
+</link>
+<link name="arm1_link">
+<visual><geometry><mesh filename="file://$(arg description_share)/meshes/arm1_link.stl"/></geometry><material name="arm1_link_color"><color rgba="0.10 0.50 0.68 1"/></material></visual>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/arm1_link_collision_028.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/arm1_link_collision_029.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/arm1_link_collision_038.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/arm1_link_collision_077.stl"/></geometry></collision>
+<inertial><origin xyz="0.10349999999999861 -4.524158825347513e-15 0.036500000000001614"/><mass value="0.8"/><inertia ixx="0.0015867303040828903" ixy="0" ixz="0" iyy="0.00775586666666669" iyz="0" izz="0.008088063637416243"/></inertial>
+</link>
+<link name="arm2_link">
+<visual><geometry><mesh filename="file://$(arg description_share)/meshes/arm2_link.stl"/></geometry><material name="arm2_link_color"><color rgba="0.10 0.50 0.68 1"/></material></visual>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/arm2_link_collision_032.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/arm2_link_collision_045.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/arm2_link_collision_046.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/arm2_link_collision_048.stl"/></geometry></collision>
+<inertial><origin xyz="0.07200000000000134 -3.629735401133871e-14 -0.006299999999999348"/><mass value="0.45"/><inertia ixx="0.0007103835000004254" ixy="0" ixz="0" iyy="0.002330383500000025" iyz="0" izz="0.002076300000000437"/></inertial>
+</link>
+<link name="tool_link">
+<visual><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link.stl"/></geometry><material name="tool_link_color"><color rgba="0.30 0.34 0.40 1"/></material></visual>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_049.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_058.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_059.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_061.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_062.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_063.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_064.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_065.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_066.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_067.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_068.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_069.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_070.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_071.stl"/></geometry></collision>
+<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_076.stl"/></geometry></collision>
+<inertial><origin xyz="2.949029909160572e-15 -5.304784389537076e-15 -0.03533070698027093"/><mass value="0.35"/><inertia ixx="0.0010352714832298565" ixy="0" ixz="0" iyy="0.0010119555516648687" iyz="0" izz="0.0005639303865941157"/></inertial>
+</link>
+<joint name="shoulder_joint" type="revolute"><parent link="base_link"/><child link="shoulder_link"/><origin xyz="0 0 0.066"/><axis xyz="0 0 1"/><limit lower="-1.5707963267948966" upper="4.642575810304916" effort="10" velocity="0.5"/><dynamics damping="0.1" friction="0.01"/></joint>
+<joint name="z_joint" type="prismatic"><parent link="shoulder_link"/><child link="arm1_link"/><origin xyz="0 0 0.19761649586021549"/><axis xyz="0 0 1"/><limit lower="-0.05" upper="0.05" effort="100" velocity="0.02"/><dynamics damping="0.1" friction="0.01"/></joint>
+<joint name="elbow_joint" type="revolute"><parent link="arm1_link"/><child link="arm2_link"/><origin xyz="0.22799999999999893 0 -0.01899999999999869"/><axis xyz="0 0 1"/><limit lower="-2.6179938779914944" upper="2.6179938779914944" effort="10" velocity="0.6"/><dynamics damping="0.1" friction="0.01"/></joint>
+<joint name="wrist_joint" type="revolute"><parent link="arm2_link"/><child link="tool_link"/><origin xyz="0.13649999999995294 0 -0.0570000000000017"/><axis xyz="0 0 1"/><limit lower="-2.827433388230814" upper="2.827433388230814" effort="10" velocity="1.0"/><dynamics damping="0.1" friction="0.01"/></joint>
+<link name="tcp_link"/>
+<joint name="tcp_fixed" type="fixed"><parent link="tool_link"/><child link="tcp_link"/><origin xyz="0 0 -0.11506141396054323"/></joint>
+<ros2_control name="ScaraSystem" type="system"><hardware>
+<xacro:if value="${mode == 'gazebo'}"><plugin>gazebo_ros2_control/GazeboSystem</plugin></xacro:if>
+<xacro:if value="${mode == 'mock'}"><plugin>mock_components/GenericSystem</plugin></xacro:if>
+</hardware>
+<joint name="shoulder_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">0.0</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="z_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">0.0</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="elbow_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">0.0</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="wrist_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">0.0</param></state_interface><state_interface name="velocity"/></joint>
+</ros2_control>
+<xacro:if value="${mode == 'gazebo'}">
+<gazebo><plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so"><robot_param>robot_description</robot_param><robot_param_node>robot_state_publisher</robot_param_node><parameters>$(arg controllers_file)</parameters></plugin></gazebo>
+<gazebo reference="base_link"><selfCollide>false</selfCollide><material>Gazebo/Grey</material></gazebo>
+<gazebo reference="shoulder_link"><selfCollide>false</selfCollide><material>Gazebo/Grey</material></gazebo>
+<gazebo reference="arm1_link"><selfCollide>false</selfCollide><material>Gazebo/Blue</material></gazebo>
+<gazebo reference="arm2_link"><selfCollide>false</selfCollide><material>Gazebo/Blue</material></gazebo>
+<gazebo reference="tool_link"><selfCollide>false</selfCollide><material>Gazebo/Grey</material></gazebo>
+</xacro:if>
+</robot>

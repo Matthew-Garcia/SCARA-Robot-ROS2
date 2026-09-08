@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot name="scara">
+<group name="arm"><chain base_link="base_link" tip_link="tcp_link"/></group>
+<group_state name="home" group="arm"><joint name="shoulder_joint" value="0"/><joint name="z_joint" value="0"/><joint name="elbow_joint" value="0"/><joint name="wrist_joint" value="0"/></group_state>
+<group_state name="cad_reference" group="arm"><joint name="shoulder_joint" value="0.2917294015883459"/><joint name="z_joint" value="0.0"/><joint name="elbow_joint" value="-0.9644068052644209"/><joint name="wrist_joint" value="0.0"/></group_state>
+<group_state name="ready" group="arm"><joint name="shoulder_joint" value="0.3"/><joint name="z_joint" value="0.025"/><joint name="elbow_joint" value="-0.6"/><joint name="wrist_joint" value="0.3"/></group_state>
+<disable_collisions link1="base_link" link2="shoulder_link" reason="Adjacent"/>
+<disable_collisions link1="shoulder_link" link2="arm1_link" reason="Adjacent"/>
+<disable_collisions link1="arm1_link" link2="arm2_link" reason="Adjacent"/>
+<disable_collisions link1="arm2_link" link2="tool_link" reason="Adjacent"/>
+<disable_collisions link1="tool_link" link2="tcp_link" reason="Adjacent"/>
+</robot>

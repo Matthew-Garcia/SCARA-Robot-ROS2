@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="3"><name>scara_moveit_config</name><version>0.1.0</version>
+<description>Original SCARA robot: Humble control, CAD visualization, and motion planning.</description>
+<maintainer email="matthew-garcia@users.noreply.github.com">Matthew Garcia</maintainer>
+<license>MIT</license><buildtool_depend>ament_cmake</buildtool_depend>
+<depend>scara_description</depend>
+<depend>scara_kinematics</depend>
+<depend>moveit_ros_move_group</depend>
+<depend>moveit_planners_ompl</depend>
+<depend>moveit_simple_controller_manager</depend>
+<depend>moveit_ros_visualization</depend>
+<depend>rviz2</depend>
+<export><build_type>ament_cmake</build_type></export></package>

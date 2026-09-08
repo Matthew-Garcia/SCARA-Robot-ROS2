@@ -1,0 +1,4 @@
+<library path="scara_kinematics_plugin">
+<class name="scara_kinematics/ScaraPlugin" type="scara_kinematics::ScaraPlugin" base_class_type="kinematics::KinematicsBase">
+<description>Analytical four-axis SCARA IK; both elbow branches, bounded angle wraps, yaw constraints and collision callbacks.</description>
+</class></library>

@@ -1,0 +1,391 @@
+{
+  "source_repository": "https://github.com/Matthew-Garcia/SCARA-Robot",
+  "source_commit": "0050e850bd5414da97d7ea8488d65917e560edf8",
+  "files": [
+    {
+      "source_path": "3D_Models/Arduino UNO case p1.SLDPRT",
+      "path": "cad/solidworks/Arduino UNO case p1.SLDPRT",
+      "sha256": "83fb1fd72818460a2c297edf9ce3777b84737c087bd59b2ecf917375bd6391f1"
+    },
+    {
+      "source_path": "3D_Models/Arduino UNO case p2.SLDPRT",
+      "path": "cad/solidworks/Arduino UNO case p2.SLDPRT",
+      "sha256": "b630e453c2f5f9e0efaa12865458dcc7e2873e0db3182bb36770cc5fb71ea7ce"
+    },
+    {
+      "source_path": "3D_Models/Arm 1 Cover.SLDPRT",
+      "path": "cad/solidworks/Arm 1 Cover.SLDPRT",
+      "sha256": "f8f02d6ebaac072150f2108bc7c41c228d116a695e4c55f1bfa4f123c111be54"
+    },
+    {
+      "source_path": "3D_Models/Arm 1.SLDPRT",
+      "path": "cad/solidworks/Arm 1.SLDPRT",
+      "sha256": "75a140f60e3cea5be066887528f8f80b1e25314455bd3dd1af3da8ed7c8e0a56"
+    },
+    {
+      "source_path": "3D_Models/Arm 2 Cover.SLDPRT",
+      "path": "cad/solidworks/Arm 2 Cover.SLDPRT",
+      "sha256": "1fac0c8864d272846e0e02d4a86934ae855fcb43d7b41f58fe108103c7c17b3a"
+    },
+    {
+      "source_path": "3D_Models/Arm 2.SLDPRT",
+      "path": "cad/solidworks/Arm 2.SLDPRT",
+      "sha256": "9b9b96bb0819803b300cdf21598e5543d4f47d514afb801e156fec91723f8c3f"
+    },
+    {
+      "source_path": "3D_Models/Ball Bearing 30x42x7mm.SLDPRT",
+      "path": "cad/solidworks/Ball Bearing 30x42x7mm.SLDPRT",
+      "sha256": "bc4d34e003aff771685abe8ee0ce0185ce77bfd3a6f21a1054573b73f34772b2"
+    },
+    {
+      "source_path": "3D_Models/Ball Bearing 35x47x7mm.SLDPRT",
+      "path": "cad/solidworks/Ball Bearing 35x47x7mm.SLDPRT",
+      "sha256": "e7550d74c6e4aa9c4baf28c0a1906a3b7a481ef5322566cd2794f8a7e96562c4"
+    },
+    {
+      "source_path": "3D_Models/Ball Bearing 608 - 8x22x7mm.SLDPRT",
+      "path": "cad/solidworks/Ball Bearing 608 - 8x22x7mm.SLDPRT",
+      "sha256": "2f8100664e77e5c2dda7e1314aa12179dabd81f7314f8dad2fcca2f379c8d2f4"
+    },
+    {
+      "source_path": "3D_Models/Base cover.SLDPRT",
+      "path": "cad/solidworks/Base cover.SLDPRT",
+      "sha256": "44f35c384d032e8d2681a8a098a46e7bde75a63d78aed69d01b76f5fd1740d7b"
+    },
+    {
+      "source_path": "3D_Models/Base.SLDPRT",
+      "path": "cad/solidworks/Base.SLDPRT",
+      "sha256": "7fe32ed9ad1ca48f6280a67fdf303fdcb74ab241e1f0b76853067317e8664187"
+    },
+    {
+      "source_path": "3D_Models/GT2 Belt 200mm.SLDPRT",
+      "path": "cad/solidworks/GT2 Belt 200mm.SLDPRT",
+      "sha256": "9b58bc3858281ab832225a3303e7cc92a1fe980b7127793f8b21455852f9572a"
+    },
+    {
+      "source_path": "3D_Models/GT2 Belt 300mm 2.SLDPRT",
+      "path": "cad/solidworks/GT2 Belt 300mm 2.SLDPRT",
+      "sha256": "02300c5110780e17369c502a113a0f51eea326b60f242569d886c0808edce741"
+    },
+    {
+      "source_path": "3D_Models/GT2 Belt 300mm.SLDPRT",
+      "path": "cad/solidworks/GT2 Belt 300mm.SLDPRT",
+      "sha256": "51c698b874ecf23654627a1b43a727c8e35589d9fbd47b3eb6d2f7e192734b29"
+    },
+    {
+      "source_path": "3D_Models/GT2 Belt 400mm 2.SLDPRT",
+      "path": "cad/solidworks/GT2 Belt 400mm 2.SLDPRT",
+      "sha256": "bdeea4a25c008b4c83eb260da269094931549625ed8c2ab3cd146a0c26c44941"
+    },
+    {
+      "source_path": "3D_Models/GT2 Belt 400mm.SLDPRT",
+      "path": "cad/solidworks/GT2 Belt 400mm.SLDPRT",
+      "sha256": "712941b988a2b92ce721e5cb561e3c896c4fa32f2ce80ebf52b8a5a27011e891"
+    },
+    {
+      "source_path": "3D_Models/GT2 Pulley - 110 teeth - J1.SLDPRT",
+      "path": "cad/solidworks/GT2 Pulley - 110 teeth - J1.SLDPRT",
+      "sha256": "e07fe5c7cb8fbaf2b4ab86510977d379eec9fdc4540203b6a8533aa25702c633"
+    },
+    {
+      "source_path": "3D_Models/GT2 Pulley - 22 - 80 teeth.SLDPRT",
+      "path": "cad/solidworks/GT2 Pulley - 22 - 80 teeth.SLDPRT",
+      "sha256": "bdb2f25e3cd33fdaeff7f2189a6e37ed988c8ddef2cfbf05595220525267ed5d"
+    },
+    {
+      "source_path": "3D_Models/GT2 Pulley - 23 - 80 teeth.SLDPRT",
+      "path": "cad/solidworks/GT2 Pulley - 23 - 80 teeth.SLDPRT",
+      "sha256": "68f50392350df0b094b9302380f1c43191459601e8264b3897075c87220081f4"
+    },
+    {
+      "source_path": "3D_Models/GT2 Pulley - 90 teeth - J3.SLDPRT",
+      "path": "cad/solidworks/GT2 Pulley - 90 teeth - J3.SLDPRT",
+      "sha256": "fc27bc241adf49b7aa83cd6f0e1f0475b331a0f37b969423aae4460cc8689877"
+    },
+    {
+      "source_path": "3D_Models/GT2 Pulley - 92 teeth - J2.SLDPRT",
+      "path": "cad/solidworks/GT2 Pulley - 92 teeth - J2.SLDPRT",
+      "sha256": "1df7948c25e9aa51e0fdba77680c9c2140607ed8916f28bafe65c1784daab947"
+    },
+    {
+      "source_path": "3D_Models/GT2 Pulley - Parametric.SLDPRT",
+      "path": "cad/solidworks/GT2 Pulley - Parametric.SLDPRT",
+      "sha256": "9fd015dcbe820ed81b963ac7fae2c1cbba48c8ff1ec7f4891cc6541597d54b1a"
+    },
+    {
+      "source_path": "3D_Models/Gripper Cover.SLDPRT",
+      "path": "cad/solidworks/Gripper Cover.SLDPRT",
+      "sha256": "2cddfc245b6698ef61e52f6303acd2d495efa2f88da19209f6ccbdc77e432948"
+    },
+    {
+      "source_path": "3D_Models/Gripper End.SLDPRT",
+      "path": "cad/solidworks/Gripper End.SLDPRT",
+      "sha256": "b2956dd8070e4eaa5f39bb1773241c2d7561f982f58cf9d5fefeb47060913c4b"
+    },
+    {
+      "source_path": "3D_Models/Gripper Hand Left.SLDPRT",
+      "path": "cad/solidworks/Gripper Hand Left.SLDPRT",
+      "sha256": "172f87c43245dc895f76c202955b79d02a14b5a9b9a5fc1ed31c94717896a1ab"
+    },
+    {
+      "source_path": "3D_Models/Gripper Hand Right.SLDPRT",
+      "path": "cad/solidworks/Gripper Hand Right.SLDPRT",
+      "sha256": "129e03152945a007e5e6fde0830053fd2f9c954f9316c29df38d323276a43baa"
+    },
+    {
+      "source_path": "3D_Models/Gripper Mechanism Slider.SLDPRT",
+      "path": "cad/solidworks/Gripper Mechanism Slider.SLDPRT",
+      "sha256": "95b55fd25a082a34b28e74030b2d30996387bc2d6dbbbc5793195862c0ce3d75"
+    },
+    {
+      "source_path": "3D_Models/Gripper Mechanism.SLDASM",
+      "path": "cad/solidworks/Gripper Mechanism.SLDASM",
+      "sha256": "553237d0f931a0e4e27087cb42c5d0b5778493ff25b2727022ad9b3fbb0bc0fb"
+    },
+    {
+      "source_path": "3D_Models/Gripper link 1.SLDPRT",
+      "path": "cad/solidworks/Gripper link 1.SLDPRT",
+      "sha256": "5604ccc36f712705cc6a714afd848a05b4ddb8aa936a896833e91cf210fc64c4"
+    },
+    {
+      "source_path": "3D_Models/Gripper link 2.SLDPRT",
+      "path": "cad/solidworks/Gripper link 2.SLDPRT",
+      "sha256": "2e15bab380c8100851dbd15b35d19cd8eef09796fc1c9f9e0cb7a59f28ffbeda"
+    },
+    {
+      "source_path": "3D_Models/Gripper rail 6mm.SLDPRT",
+      "path": "cad/solidworks/Gripper rail 6mm.SLDPRT",
+      "sha256": "815735d3c8451021eb3550715bbaa914651c9a93cdf83597c757fcd80a3b55dc"
+    },
+    {
+      "source_path": "3D_Models/Gripper to J3 connector.SLDPRT",
+      "path": "cad/solidworks/Gripper to J3 connector.SLDPRT",
+      "sha256": "21b77fa71323843f376cb7f4d8150e1d9ff8ffcf45700d004c3de4543ef2f383"
+    },
+    {
+      "source_path": "3D_Models/J1 coupler.SLDPRT",
+      "path": "cad/solidworks/J1 coupler.SLDPRT",
+      "sha256": "894a77302c772fb43ef0167418414288f1d66fbfbc117faf6d3b3679848a071d"
+    },
+    {
+      "source_path": "3D_Models/J2 Coupler.SLDPRT",
+      "path": "cad/solidworks/J2 Coupler.SLDPRT",
+      "sha256": "ec313ed554671bcf329ddcd3eff57d4d63350cc0cf9814ac514ccf93bb432c6a"
+    },
+    {
+      "source_path": "3D_Models/J3 Coupler.SLDPRT",
+      "path": "cad/solidworks/J3 Coupler.SLDPRT",
+      "sha256": "e52aa4881b3c568697323b670dde843a804d0cfa130abce2f79345b9b01f4597"
+    },
+    {
+      "source_path": "3D_Models/Lead Screw D8mm L380mm.SLDPRT",
+      "path": "cad/solidworks/Lead Screw D8mm L380mm.SLDPRT",
+      "sha256": "266544735ea8c0c1057f69a4d64e5373d058c65f2a9fdb7ea2366abcfb4789e4"
+    },
+    {
+      "source_path": "3D_Models/Lead Screw Nut 8mm.SLDPRT",
+      "path": "cad/solidworks/Lead Screw Nut 8mm.SLDPRT",
+      "sha256": "bc0847db00f43661f3a2d77624fd8654cdea9f47d58b47062282cdd29697c7e1"
+    },
+    {
+      "source_path": "3D_Models/Linear Bearing 10x19x29mm.SLDPRT",
+      "path": "cad/solidworks/Linear Bearing 10x19x29mm.SLDPRT",
+      "sha256": "9c42d0ad6155b56ce74bd202e76266226cba53135d72d66b1a095e92aa674fa2"
+    },
+    {
+      "source_path": "3D_Models/M4 50mm - Bolts.SLDPRT",
+      "path": "cad/solidworks/M4 50mm - Bolts.SLDPRT",
+      "sha256": "34f69fef6acbc44d032338f69eacdcfd6efd253403bc66306bfd8cefaff44369"
+    },
+    {
+      "source_path": "3D_Models/M4 50mm - Bolts.step",
+      "path": "cad/step/M4 50mm - Bolts.step",
+      "sha256": "2b5f2a479dee312460445563adcdbb1ce17c1f9f293f80575f9843f246e1bdba"
+    },
+    {
+      "source_path": "3D_Models/M4 60mm - Bolts.SLDPRT",
+      "path": "cad/solidworks/M4 60mm - Bolts.SLDPRT",
+      "sha256": "261a6953d65c81c791e39462788d9c952d41050a0b432b1c875f66f3ab0816b9"
+    },
+    {
+      "source_path": "3D_Models/M4 60mm - Bolts.step",
+      "path": "cad/step/M4 60mm - Bolts.step",
+      "sha256": "c56404e41f1d8a4c92ace524c405722cfef8e135bc89257a92711c075af0f1e0"
+    },
+    {
+      "source_path": "3D_Models/M4 Lock nut.SLDPRT",
+      "path": "cad/solidworks/M4 Lock nut.SLDPRT",
+      "sha256": "17df459b28feba769dc4453b8383f107bbe4242a2e4026d0ddbeb4b2b9ced90b"
+    },
+    {
+      "source_path": "3D_Models/M4 Lock nut.step",
+      "path": "cad/step/M4 Lock nut.step",
+      "sha256": "d4aaad1d8314c6ea4ecdaeac6a4dbefa0b2a0653250ed4a30d5311a49eb59bb5"
+    },
+    {
+      "source_path": "3D_Models/M8 45mm - Bolts.SLDPRT",
+      "path": "cad/solidworks/M8 45mm - Bolts.SLDPRT",
+      "sha256": "647c454bffbabc9671bfbe8f4f86af1cfec5b4d84987794b445a844fdaae6061"
+    },
+    {
+      "source_path": "3D_Models/M8 45mm - Bolts.step",
+      "path": "cad/step/M8 45mm - Bolts.step",
+      "sha256": "5eef9b9b25778b7cd284374724f444f76d8c0de0565049de8d93e84018c4b224"
+    },
+    {
+      "source_path": "3D_Models/M8 Lock nut.SLDPRT",
+      "path": "cad/solidworks/M8 Lock nut.SLDPRT",
+      "sha256": "ec51ca55c10159c1c5f388bff8a85ae01b973698cd2c30999ae26fb6c9151ffd"
+    },
+    {
+      "source_path": "3D_Models/M8 Lock nut.step",
+      "path": "cad/step/M8 Lock nut.step",
+      "sha256": "c8d49ddc481bcc11f505158da1050c6cc0b05b51ac3e898af007b3aff97c5059"
+    },
+    {
+      "source_path": "3D_Models/M8 Washer.SLDPRT",
+      "path": "cad/solidworks/M8 Washer.SLDPRT",
+      "sha256": "2c915ed9f58260f0b635f072167b0a732ac87c2e1646a0170a16a7487945660c"
+    },
+    {
+      "source_path": "3D_Models/Micro switch.SLDPRT",
+      "path": "cad/solidworks/Micro switch.SLDPRT",
+      "sha256": "99ae5cb52133d3b344227c95256c2cbd6de16e4816916bfe4d959143dfed53e7"
+    },
+    {
+      "source_path": "3D_Models/Micro switch.step",
+      "path": "cad/step/Micro switch.step",
+      "sha256": "baa2e9e5c34b3c796c18d0f4018fc5ce55486ab18f689d91eb0650eb6fcf233b"
+    },
+    {
+      "source_path": "3D_Models/NEMA 17 Stepper L24mm - 20mm shaft.SLDPRT",
+      "path": "cad/solidworks/NEMA 17 Stepper L24mm - 20mm shaft.SLDPRT",
+      "sha256": "a39362e673a601ae40e221d5b04b7e2813203b92c78eaf08d556a3c0c9a14d44"
+    },
+    {
+      "source_path": "3D_Models/NEMA 17 Stepper L24mm - 20mm shaft.step",
+      "path": "cad/step/NEMA 17 Stepper L24mm - 20mm shaft.step",
+      "sha256": "d4b8f44e788da18ea19f9b4aa8c504532f91a4eeec75d15067ba01f43423ca3a"
+    },
+    {
+      "source_path": "3D_Models/SCARA Robot 3D Model.STEP",
+      "path": "cad/step/SCARA Robot 3D Model.STEP",
+      "sha256": "fe0c2d5b99eefed10110d486063a493856d7664ea546cf48ab87c5b1a7630501"
+    },
+    {
+      "source_path": "3D_Models/SCARA Robot.SLDASM",
+      "path": "cad/solidworks/SCARA Robot.SLDASM",
+      "sha256": "614e0dc697bee54689224b6cb45599126a877319f5d11e8c7fa9292e1656096a"
+    },
+    {
+      "source_path": "3D_Models/Servo Holder.SLDPRT",
+      "path": "cad/solidworks/Servo Holder.SLDPRT",
+      "sha256": "a99151910d80f69e084423ef8156eb8ef0a9b026c119367d26b4af79c25038c5"
+    },
+    {
+      "source_path": "3D_Models/Servo MG996R Horn.SLDPRT",
+      "path": "cad/solidworks/Servo MG996R Horn.SLDPRT",
+      "sha256": "6e001a132f7ab94fffd659c00af0b81320ae3f12a29659537cbed83385f7e34c"
+    },
+    {
+      "source_path": "3D_Models/Servo MG996R Horn.step",
+      "path": "cad/step/Servo MG996R Horn.step",
+      "sha256": "437a53b459970a28676507cdfaa7f32e62f7451d879256ccd44e78db1741f9d4"
+    },
+    {
+      "source_path": "3D_Models/Servo Motor MG996R 3D Model.SLDPRT",
+      "path": "cad/solidworks/Servo Motor MG996R 3D Model.SLDPRT",
+      "sha256": "daa7547784a72f71810de61f2b31369476ab2cee8771d6f7c8817364c560b427"
+    },
+    {
+      "source_path": "3D_Models/Servo Motor MG996R 3D Model.step",
+      "path": "cad/step/Servo Motor MG996R 3D Model.step",
+      "sha256": "fbed1edb89948f6a4e4d22cdd5dac29cecc05cd0d793a81f4ffa1b05b8ab18a2"
+    },
+    {
+      "source_path": "3D_Models/Smooth Rod Clamp.SLDPRT",
+      "path": "cad/solidworks/Smooth Rod Clamp.SLDPRT",
+      "sha256": "9cd2e3e62db872d7596f7b1bc6a6a7fecefb3c8e0d4486632e64cdc965639457"
+    },
+    {
+      "source_path": "3D_Models/Smooth Rod D10mm L400mm.SLDPRT",
+      "path": "cad/solidworks/Smooth Rod D10mm L400mm.SLDPRT",
+      "sha256": "f799394fcbcca5d06729e88d80488f69d432fe2b0b748e5fa7c1cd5290fb86c5"
+    },
+    {
+      "source_path": "3D_Models/Stepper NEMA 17 -  20mm shaft.SLDPRT",
+      "path": "cad/solidworks/Stepper NEMA 17 -  20mm shaft.SLDPRT",
+      "sha256": "d6bcdd9f2fbacb802cbc46e1a6dcdae16bfaa83ebc717b01d515dc3efb125dd3"
+    },
+    {
+      "source_path": "3D_Models/Stepper NEMA 17 -  20mm shaft.step",
+      "path": "cad/step/Stepper NEMA 17 -  20mm shaft.step",
+      "sha256": "ff66125be2803e48c4d523c688b238075845cff7e67d6683424413b3e7e4c29b"
+    },
+    {
+      "source_path": "3D_Models/Thrust Bearing - 40x60x13.SLDPRT",
+      "path": "cad/solidworks/Thrust Bearing - 40x60x13.SLDPRT",
+      "sha256": "ce43191c2ce52eab0c424e3b73915737c6710c94402069462d834692fb5e1f60"
+    },
+    {
+      "source_path": "3D_Models/Thrust Bearing 35x52x12mm.SLDPRT",
+      "path": "cad/solidworks/Thrust Bearing 35x52x12mm.SLDPRT",
+      "sha256": "18f1fcedf37de07aaba86dc2fe125c3c45da21da1b8c34dd96b1fd9f19b7f694"
+    },
+    {
+      "source_path": "3D_Models/Top cover.SLDPRT",
+      "path": "cad/solidworks/Top cover.SLDPRT",
+      "sha256": "223c127aac16bf878e8cc61e83684338f22ce7d4fd981c4f7b8f03a68e781cd0"
+    },
+    {
+      "source_path": "3D_Models/Wide gripper end - Left side.SLDPRT",
+      "path": "cad/solidworks/Wide gripper end - Left side.SLDPRT",
+      "sha256": "a0e6e671b35ae26e4ca1a9a39ed2fe1f3f8c466c2424ed5eacc728ffd9345f9e"
+    },
+    {
+      "source_path": "3D_Models/Wide gripper end.SLDPRT",
+      "path": "cad/solidworks/Wide gripper end.SLDPRT",
+      "sha256": "238c823b2189b7a6b53cd84325157be437fa8521081718309819af6c5a523dc0"
+    },
+    {
+      "source_path": "3D_Models/Z-axis Bottom Plate.SLDPRT",
+      "path": "cad/solidworks/Z-axis Bottom Plate.SLDPRT",
+      "sha256": "605cea4093eca0d297ed4075dec242d5604d6f4e8029bef4d945ce9e3e1d2287"
+    },
+    {
+      "source_path": "3D_Models/Z-axis Mount Platform.SLDPRT",
+      "path": "cad/solidworks/Z-axis Mount Platform.SLDPRT",
+      "sha256": "7f510dba02a1005090f79c705ba4f69de3fddcc4e761ab8bace128487444d9a4"
+    },
+    {
+      "source_path": "3D_Models/Z-axis Top Plate.SLDPRT",
+      "path": "cad/solidworks/Z-axis Top Plate.SLDPRT",
+      "sha256": "fbc9702a0dee984875f8b25dc1d0d407b3da89d4ba452ac6bd1bc9b07060a928"
+    },
+    {
+      "source_path": "Code/GUI_for_SCARA_Robot.pde",
+      "path": "software/processing/GUI_for_SCARA_Robot/GUI_for_SCARA_Robot.pde",
+      "sha256": "ebcc9e784468e6e14a41e51633060084fe99de3c4a6b22862481b57f9e6dc1fe"
+    },
+    {
+      "source_path": "Code/SCARA_Robot.ino",
+      "path": "firmware/arduino/SCARA_Robot/SCARA_Robot.ino",
+      "sha256": "51573e2ee335c90b72af32fedc5f88adb1f5ea9c83f009afae365ba0b9c74d5c"
+    },
+    {
+      "source_path": "Images/SCARA-Robot-Arm.gif",
+      "path": "media/original/SCARA-Robot-Arm.gif",
+      "sha256": "bf8b15f27672e02daf5d01e7ccd0485d308ef6ede85e82ba4e67e3ecde25e9a6"
+    },
+    {
+      "source_path": "Images/SCARA-Robot-Arm.jpg",
+      "path": "media/original/SCARA-Robot-Arm.jpg",
+      "sha256": "6033d79ce6f7970f4895f029796c202ce468323936b308a558c6b9ad2a556a3c"
+    },
+    {
+      "source_path": "README.md",
+      "path": "docs/archive/original-readme.md",
+      "sha256": "bd5dbb13939ebba287835a1347b52efdc785415846e16a4892ce8d4307fdde2d"
+    }
+  ]
+}

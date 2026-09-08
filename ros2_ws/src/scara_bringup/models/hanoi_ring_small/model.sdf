@@ -1,0 +1,414 @@
+<sdf version="1.6">
+  <model name="hanoi_ring_small">
+    <static>false</static>
+    <pose>0 0 0 0 0 0</pose>
+    <link name="body">
+      <inertial>
+        <mass>0.009</mass>
+        <inertia>
+          <ixx>5.452500000000001e-07</ixx>
+          <iyy>5.452500000000001e-07</iyy>
+          <izz>9.945e-07</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <collision name="collision_0">
+        <pose>0.0095 0.0 0 0 0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_1">
+        <pose>0.009176295349746148 0.002458780928473947 0 0 0 0.2617993877991494</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_2">
+        <pose>0.008227241335952167 0.004749999999999999 0 0 0 0.5235987755982988</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_3">
+        <pose>0.006717514421272202 0.006717514421272201 0 0 0 0.7853981633974483</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_4">
+        <pose>0.004750000000000001 0.008227241335952167 0 0 0 1.0471975511965976</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_5">
+        <pose>0.002458780928473947 0.009176295349746148 0 0 0 1.3089969389957472</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_6">
+        <pose>5.817072295949927e-19 0.0095 0 0 0 1.5707963267948966</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_7">
+        <pose>-0.002458780928473946 0.009176295349746148 0 0 0 1.832595714594046</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_8">
+        <pose>-0.004749999999999998 0.008227241335952167 0 0 0 2.0943951023931953</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_9">
+        <pose>-0.006717514421272201 0.006717514421272202 0 0 0 2.356194490192345</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_10">
+        <pose>-0.008227241335952167 0.004749999999999999 0 0 0 2.6179938779914944</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_11">
+        <pose>-0.009176295349746148 0.0024587809284739495 0 0 0 2.8797932657906435</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_12">
+        <pose>-0.0095 1.1634144591899855e-18 0 0 0 3.141592653589793</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_13">
+        <pose>-0.009176295349746148 -0.0024587809284739473 0 0 0 3.4033920413889427</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_14">
+        <pose>-0.008227241335952169 -0.004749999999999997 0 0 0 3.665191429188092</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_15">
+        <pose>-0.006717514421272205 -0.006717514421272198 0 0 0 3.926990816987241</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_16">
+        <pose>-0.004750000000000004 -0.008227241335952165 0 0 0 4.1887902047863905</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_17">
+        <pose>-0.002458780928473946 -0.009176295349746148 0 0 0 4.4505895925855405</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_18">
+        <pose>-1.7451216887849783e-18 -0.0095 0 0 0 4.71238898038469</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_19">
+        <pose>0.002458780928473943 -0.00917629534974615 0 0 0 4.974188368183839</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_20">
+        <pose>0.004750000000000001 -0.008227241335952167 0 0 0 5.235987755982989</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_21">
+        <pose>0.006717514421272199 -0.006717514421272203 0 0 0 5.497787143782138</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_22">
+        <pose>0.008227241335952165 -0.004750000000000004 0 0 0 5.759586531581287</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name="collision_23">
+        <pose>0.009176295349746146 -0.0024587809284739547 0 0 0 6.021385919380436</pose>
+        <geometry>
+          <box>
+            <size>0.009000000000000001 0.0036862699324470834 0.008</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.8</mu>
+              <mu2>0.8</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="ring_visual">
+        <geometry>
+          <mesh>
+            <uri>model://hanoi_ring_small/meshes/ring.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.2 0.75 0.44 1</ambient>
+          <diffuse>0.2 0.75 0.44 1</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

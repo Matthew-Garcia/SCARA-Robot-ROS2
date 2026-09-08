@@ -1,0 +1,50 @@
+name: SCARA Humble simulation
+on:
+  push:
+    paths: ['ros2_ws/**', 'cad/**', 'tools/**', 'docs/source_manifest.json', '.github/workflows/scara-humble.yml']
+  pull_request:
+    paths: ['ros2_ws/**', 'cad/**', 'tools/**', 'docs/source_manifest.json', '.github/workflows/scara-humble.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-and-simulate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    container: ros:humble-ros-base-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Humble dependencies
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ros-humble-moveit ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros2-control ros-humble-xacro ros-humble-rviz2 python3-colcon-common-extensions python3-pytest python3-numpy python3-yaml xvfb xauth
+      - name: Verify geometry and analytic solver
+        shell: bash
+        run: |
+          source /opt/ros/humble/setup.bash
+          python3 -m pytest -q ros2_ws/tests
+          g++ -std=c++17 -Wall -Wextra -pedantic -I ros2_ws/src/scara_kinematics/include ros2_ws/tests/test_analytic.cpp -o /tmp/test_analytic
+          /tmp/test_analytic
+      - name: Build
+        shell: bash
+        run: |
+          source /opt/ros/humble/setup.bash
+          cd ros2_ws
+          colcon build --event-handlers console_direct+
+      - name: Exercise mock and Gazebo stacks
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          GAZEBO_MODEL_DATABASE_URI: ''
+        run: |
+          source /opt/ros/humble/setup.bash
+          source ros2_ws/install/setup.bash
+          xvfb-run -a python3 tools/run_integration.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scara-humble-logs
+          path: |
+            /tmp/scara-*.log
+            ros2_ws/log/

@@ -1,0 +1,23 @@
+default_velocity_scaling_factor: 0.3
+default_acceleration_scaling_factor: 0.3
+joint_limits:
+  shoulder_joint:
+    has_velocity_limits: true
+    max_velocity: 0.5
+    has_acceleration_limits: true
+    max_acceleration: 0.4
+  z_joint:
+    has_velocity_limits: true
+    max_velocity: 0.02
+    has_acceleration_limits: true
+    max_acceleration: 0.02
+  elbow_joint:
+    has_velocity_limits: true
+    max_velocity: 0.6
+    has_acceleration_limits: true
+    max_acceleration: 0.5
+  wrist_joint:
+    has_velocity_limits: true
+    max_velocity: 1.0
+    has_acceleration_limits: true
+    max_acceleration: 0.8
