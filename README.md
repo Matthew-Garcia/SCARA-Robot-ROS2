@@ -6,7 +6,27 @@ A ROS 2 workspace built around the SCARA assembly and embedded code from [Matthe
 
 **Target environment:** Ubuntu 22.04 LTS + ROS 2 Humble + Gazebo Classic 11.
 
+## Robot Demonstrations
+
+### Physical SCARA Robot
+
+![Physical SCARA Robot](media/original/SCARA-Robot-Arm.gif)
+
+Physical four-axis SCARA manipulator demonstrating basic joint motion and operation of the original hardware.
+
+### ROS 2 Gazebo + RViz2 Simulation
+
+https://github.com/user-attachments/assets/899a8b08-be5f-4084-b404-54a212bec7f7
+
+ROS 2 Humble simulation of the SCARA manipulator running in Gazebo and RViz2 with `ros2_control` and MoveIt 2 for joint control, motion planning, and trajectory execution.
+
+## CAD Model
+
 ![Original SCARA CAD model](docs/images/scara_cad_preview.png)
+
+*Preview rendered from the original STEP assembly. This is a CAD visualization, not a screenshot of a running Gazebo session.*
+
+## Start here
 
 *Preview rendered from the original STEP assembly. This is a CAD visualization, not a screenshot of a running Gazebo session.*
 
