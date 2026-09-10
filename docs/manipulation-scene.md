@@ -20,7 +20,7 @@ The work surface is 45 mm high. The Hanoi board top is 53 mm high. Pegs are 6 mm
 ros2 launch scara_bringup sim.launch.py
 ```
 
-Gazebo gives the movable objects mass, inertia, collision geometry and friction. Their gravity is disabled for this scripted demonstration so model-state grasp coupling remains deterministic and each released object stays at its commanded placement pose. Rings use true annular visual meshes and 24 collision segments each, keeping the center holes open around the pegs. The single `hanoi_stand` model contains the board and all three pegs.
+Gazebo gives the movable objects gravity, mass, inertia, collision geometry and friction. Rings use true annular visual meshes and 24 collision segments each, keeping the center holes open around the pegs. The single `hanoi_stand` model contains the board and all three pegs.
 
 `scene_objects.py` mirrors the models' world poses from `/gazebo/model_states` to MoveIt's `/planning_scene` at 1 Hz. Cube, sphere, surface, board, pegs and segmented ring collision shapes match between the two systems. Mock mode publishes the same initial scene without physics. This is a slow scene synchronization loop for demonstrations, not high-rate perception or contact feedback.
 
@@ -32,7 +32,7 @@ ros2 run scara_bringup gripper_command.py close
 ros2 run scara_bringup pick_lift_demo.py --object cube
 ```
 
-The two fingers are independently represented but commanded together. In Gazebo, closing near an approved object couples its model pose to the moving gripper; opening releases it at the commanded destination. The demonstration supports `cube`, `sphere`, `cylinder`, and `hex`. An autonomous Hanoi solver is not included.
+The two fingers are independently represented but commanded together. A world-level Gazebo plugin creates a temporary fixed joint when the fingers close around an approved object and releases that joint when they open. The demonstration supports `cube`, `sphere`, `cylinder`, and `hex`. An autonomous Hanoi solver is not included.
 
 The placement fixture is in `cad/development/` as both OpenSCAD and STL. It measures 240 × 70 × 10 mm and has four shallow locating pockets. The red-cube station is a 38 mm square pocket; the Gazebo version includes raised retaining walls and the automatic cube demo verifies the final cube position.
 

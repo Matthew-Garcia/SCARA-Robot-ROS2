@@ -3,6 +3,7 @@
 <description>Original SCARA robot: Humble control, CAD visualization, and motion planning.</description>
 <maintainer email="matthew-garcia@users.noreply.github.com">Matthew Garcia</maintainer>
 <license>MIT</license><buildtool_depend>ament_cmake</buildtool_depend>
+<build_depend>gazebo_dev</build_depend>
 <depend>scara_description</depend>
 <depend>scara_moveit_config</depend>
 <depend>controller_manager</depend>

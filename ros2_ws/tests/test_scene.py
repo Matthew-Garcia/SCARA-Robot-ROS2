@@ -58,15 +58,12 @@ def test_moveit_and_gazebo_collision_geometry_match():
         if not item['static']:
             assert float(model.findtext('link/inertial/mass'))>0
             assert all(float(model.findtext('link/inertial/inertia/'+k))>0 for k in ['ixx','iyy','izz'])
-            assert model.findtext('link/gravity') == 'false'
     assert WORLD.find("plugin[@filename='libgazebo_ros_state.so']") is not None
 
 def test_separate_opencv_conveyor_world_and_launch():
     models={m.attrib['name']:m for m in CONVEYOR.findall('model')}
     assert {'conveyor','sorting_bins','overhead_camera'} <= set(models)
     assert {'conveyor_cube_red','conveyor_cube_green','conveyor_cube_blue'} <= set(models)
-    assert all(models[f'conveyor_cube_{color}'].findtext('link/gravity') == 'false'
-               for color in ['red','green','blue'])
     camera=models['overhead_camera'].find("link/sensor[@type='camera']")
     assert camera is not None
     assert camera.find("plugin[@filename='libgazebo_ros_camera.so']") is not None
@@ -81,8 +78,9 @@ def test_separate_opencv_conveyor_world_and_launch():
 def test_simulation_grasp_coupling_is_launched_and_installed():
     launch=(B/'launch/sim.launch.py').read_text()
     cmake=(B/'CMakeLists.txt').read_text()
-    helper=(B/'scripts/simulation_grasp.py').read_text()
-    assert "executable='simulation_grasp.py'" in launch
-    assert 'simulation_grasp.py' in cmake
-    assert "'/gazebo/set_model_state'" in helper
-    assert 'conveyor_cube_red' in helper
+    source=(B/'src/scara_grasp_world_plugin.cpp').read_text()
+    assert 'GAZEBO_PLUGIN_PATH' in launch
+    assert 'scara_grasp_world_plugin' in cmake
+    assert 'GZ_REGISTER_WORLD_PLUGIN' in source
+    assert WORLD.find("plugin[@filename='libscara_grasp_world_plugin.so']") is not None
+    assert CONVEYOR.find("plugin[@filename='libscara_grasp_world_plugin.so']") is not None
