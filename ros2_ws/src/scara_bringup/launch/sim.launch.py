@@ -5,10 +5,10 @@ import yaml
 import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction, RegisterEventHandler, EmitEvent, LogInfo, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, OpaqueFunction, RegisterEventHandler, EmitEvent, LogInfo, SetEnvironmentVariable
+from launch.conditions import IfCondition
 from launch.events import Shutdown
 from launch.event_handlers import OnProcessExit
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -59,11 +59,12 @@ def setup(context):
              RegisterEventHandler(OnProcessExit(target_action=controller,on_exit=after_success([gripper]))),
              RegisterEventHandler(OnProcessExit(target_action=gripper,on_exit=after_success(ready))),publisher]
     if sim:
-        gazebo=IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('gazebo_ros'))/'launch/gazebo.launch.py')),
-            launch_arguments={'world':str(world_path),'gui':gui,'verbose':'false','pause':'false',
-                              'extra_gazebo_args':f'--server-plugin={plugin_path}'}.items())
+        gazebo=ExecuteProcess(cmd=['gzserver',str(world_path),
+            '-s','libgazebo_ros_init.so','-s','libgazebo_ros_factory.so',
+            '-s','libgazebo_ros_force_system.so','-s',str(plugin_path)],output='screen')
+        client=ExecuteProcess(cmd=['gzclient'],output='screen',condition=IfCondition(gui))
         spawn=Node(package='gazebo_ros',executable='spawn_entity.py',arguments=['-entity','scara','-topic','robot_description','-timeout','120'],output='screen')
-        actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,spawn]
+        actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,client,spawn]
     else:
         actions += [Node(package='controller_manager',executable='ros2_control_node',parameters=[robot,controllers,{'use_sim_time':False}],output='screen'),broadcaster]
     return actions
