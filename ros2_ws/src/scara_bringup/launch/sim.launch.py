@@ -5,7 +5,7 @@ import yaml
 import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction, RegisterEventHandler, EmitEvent, LogError, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction, RegisterEventHandler, EmitEvent, LogInfo, SetEnvironmentVariable
 from launch.events import Shutdown
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -46,7 +46,7 @@ def setup(context):
     def after_success(next_actions):
         def callback(event,context):
             if event.returncode!=0:
-                return [LogError(msg='SCARA startup failed; inspect the preceding process error.'),EmitEvent(event=Shutdown(reason='SCARA startup failure'))]
+                return [LogInfo(msg='ERROR: SCARA startup failed; inspect the preceding process error.'),EmitEvent(event=Shutdown(reason='SCARA startup failure'))]
             return next_actions
         return callback
     actions=[SetEnvironmentVariable('GAZEBO_MODEL_PATH',os.pathsep.join(filter(None,[str(bringup/'models'),os.environ.get('GAZEBO_MODEL_PATH','')]))),RegisterEventHandler(OnProcessExit(target_action=broadcaster,on_exit=after_success([controller]))),
