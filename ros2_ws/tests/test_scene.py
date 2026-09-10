@@ -81,5 +81,5 @@ def test_simulation_grasp_coupling_is_launched_and_installed():
     helper=(B/'scripts/simulation_grasp.py').read_text()
     assert "executable='simulation_grasp.py'" in launch
     assert 'simulation_grasp.py' in cmake
-    assert "'/gazebo/set_entity_state'" in helper
+    assert "'/gazebo/set_model_state'" in helper
     assert 'conveyor_cube_red' in helper

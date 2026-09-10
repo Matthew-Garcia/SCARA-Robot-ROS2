@@ -4,8 +4,8 @@ import math
 import time
 
 import rclpy
-from gazebo_msgs.msg import EntityState, LinkStates, ModelStates
-from gazebo_msgs.srv import SetEntityState
+from gazebo_msgs.msg import LinkStates, ModelState, ModelStates
+from gazebo_msgs.srv import SetModelState
 from geometry_msgs.msg import Pose
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
@@ -78,7 +78,7 @@ class SimulationGrasp(Node):
         self.offset = None
         self.pending = None
         self.last_warning = 0.0
-        self.set_entity = self.create_client(SetEntityState, '/gazebo/set_entity_state')
+        self.set_model = self.create_client(SetModelState, '/gazebo/set_model_state')
         self.create_subscription(LinkStates, '/gazebo/link_states', self.links, 10)
         self.create_subscription(ModelStates, '/gazebo/model_states', self.model_states, 10)
         self.create_subscription(JointState, '/joint_states', self.joints, 10)
@@ -140,14 +140,14 @@ class SimulationGrasp(Node):
             if (response is None or not response.success) and time.monotonic()-self.last_warning > 2.0:
                 self.last_warning = time.monotonic()
                 self.get_logger().warning('Gazebo rejected an attached-object pose update.')
-        if not self.set_entity.service_is_ready():
+        if not self.set_model.service_is_ready():
             return
-        request = SetEntityState.Request()
-        request.state = EntityState()
-        request.state.name = self.attached
-        request.state.reference_frame = 'world'
-        request.state.pose = compose(self.gripper_pose, self.offset)
-        self.pending = self.set_entity.call_async(request)
+        request = SetModelState.Request()
+        request.model_state = ModelState()
+        request.model_state.model_name = self.attached
+        request.model_state.reference_frame = 'world'
+        request.model_state.pose = compose(self.gripper_pose, self.offset)
+        self.pending = self.set_model.call_async(request)
 
 
 def main():

@@ -7,8 +7,8 @@ import time
 
 import rclpy
 from control_msgs.action import FollowJointTrajectory
-from gazebo_msgs.msg import EntityState, ModelStates
-from gazebo_msgs.srv import SetEntityState
+from gazebo_msgs.msg import ModelState, ModelStates
+from gazebo_msgs.srv import SetModelState
 from rclpy.action import ActionClient
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -26,7 +26,7 @@ class ConveyorDemo(Node):
         super().__init__('scara_conveyor_sort_demo')
         self.arm = ActionClient(self, FollowJointTrajectory, '/arm_controller/follow_joint_trajectory')
         self.gripper = ActionClient(self, FollowJointTrajectory, '/gripper_controller/follow_joint_trajectory')
-        self.set_entity = self.create_client(SetEntityState, '/gazebo/set_entity_state')
+        self.set_model = self.create_client(SetModelState, '/gazebo/set_model_state')
         self.models = {}
         self.detections = {}
         self.create_subscription(ModelStates, '/gazebo/model_states', self.models_callback, 10)
@@ -73,17 +73,17 @@ class ConveyorDemo(Node):
         return [shoulder, tcp_z-0.0725550818996708, elbow, -shoulder-elbow]
 
     def move_model(self, name, x, y, z):
-        if not self.set_entity.wait_for_service(timeout_sec=30):
-            raise RuntimeError('/gazebo/set_entity_state is unavailable')
-        request = SetEntityState.Request()
-        request.state = EntityState()
-        request.state.name = name
-        request.state.reference_frame = 'world'
-        request.state.pose.position.x = x
-        request.state.pose.position.y = y
-        request.state.pose.position.z = z
-        request.state.pose.orientation.w = 1.0
-        future = self.set_entity.call_async(request)
+        if not self.set_model.wait_for_service(timeout_sec=30):
+            raise RuntimeError('/gazebo/set_model_state is unavailable')
+        request = SetModelState.Request()
+        request.model_state = ModelState()
+        request.model_state.model_name = name
+        request.model_state.reference_frame = 'world'
+        request.model_state.pose.position.x = x
+        request.model_state.pose.position.y = y
+        request.model_state.pose.position.z = z
+        request.model_state.pose.orientation.w = 1.0
+        future = self.set_model.call_async(request)
         rclpy.spin_until_future_complete(self, future, timeout_sec=5)
         if not future.done() or not future.result().success:
             raise RuntimeError(f'could not move {name} on the conveyor')
