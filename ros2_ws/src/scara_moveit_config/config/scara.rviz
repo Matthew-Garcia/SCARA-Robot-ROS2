@@ -48,8 +48,16 @@ Visualization Manager:
       Robot Alpha: 0.25
     Planning Request:
       Planning Group: arm
-      Query Goal State: false
+      Colliding Link Color: 255; 0; 0
+      Goal State Alpha: 0.65
+      Goal State Color: 250; 128; 0
+      Interactive Marker Size: 0
+      Joint Violation Color: 255; 0; 255
+      Query Goal State: true
       Query Start State: false
+      Show Workspace: false
+      Start State Alpha: 0.35
+      Start State Color: 0; 255; 0
     Scene Robot:
       Show Robot Collision: false
       Show Robot Visual: false
