@@ -61,7 +61,7 @@ def setup(context):
     if sim:
         gazebo=IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('gazebo_ros'))/'launch/gazebo.launch.py')),
             launch_arguments={'world':str(world_path),'gui':gui,'verbose':'false','pause':'false',
-                              'extra_gazebo_args':f'-s {plugin_path}'}.items())
+                              'extra_gazebo_args':f'--server-plugin={plugin_path}'}.items())
         spawn=Node(package='gazebo_ros',executable='spawn_entity.py',arguments=['-entity','scara','-topic','robot_description','-timeout','120'],output='screen')
         actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,spawn]
     else:

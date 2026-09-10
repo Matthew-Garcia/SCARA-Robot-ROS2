@@ -80,7 +80,7 @@ def test_simulation_grasp_coupling_is_launched_and_installed():
     cmake=(B/'CMakeLists.txt').read_text()
     source=(B/'src/scara_grasp_world_plugin.cpp').read_text()
     assert 'GAZEBO_PLUGIN_PATH' in launch
-    assert "'extra_gazebo_args':f'-s {plugin_path}'" in launch
+    assert "'extra_gazebo_args':f'--server-plugin={plugin_path}'" in launch
     assert 'scara_grasp_world_plugin' in cmake
     assert 'GZ_REGISTER_SYSTEM_PLUGIN' in source
     assert 'ConnectWorldCreated' in source
