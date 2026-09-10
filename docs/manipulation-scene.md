@@ -7,7 +7,7 @@ The default launch includes four colored pickup solids, a blue placement tray, a
 | Red cube | 30 mm edges | (0.255, 0.105, 0.060) |
 | Green sphere | 32 mm diameter | (0.310, 0.120, 0.061) |
 | Yellow cylinder | 30 mm diameter × 34 mm | (0.205, 0.135, 0.062) |
-| Purple diamond block | 28 × 28 × 32 mm, rotated 45° | (0.350, 0.055, 0.061) |
+| Purple diamond block | 28 × 28 × 32 mm, rotated 45° | (0.160, 0.095, 0.061) |
 | Large Hanoi ring | 48 mm outer diameter, 10 mm hole, 8 mm thick | (0.200, −0.115, 0.057) |
 | Medium Hanoi ring | 38 mm outer diameter, 10 mm hole, 8 mm thick | (0.200, −0.115, 0.065) |
 | Small Hanoi ring | 28 mm outer diameter, 10 mm hole, 8 mm thick | (0.200, −0.115, 0.073) |
