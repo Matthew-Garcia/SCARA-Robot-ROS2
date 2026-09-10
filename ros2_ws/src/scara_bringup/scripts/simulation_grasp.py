@@ -8,7 +8,8 @@ and releases it back to Gazebo physics when the fingers open.
 import math
 
 import rclpy
-from gazebo_msgs.msg import LinkStates, ModelState, ModelStates
+from gazebo_msgs.msg import EntityState, LinkStates, ModelStates
+from gazebo_msgs.srv import SetEntityState
 from geometry_msgs.msg import Pose
 from rclpy.node import Node
 
@@ -80,8 +81,9 @@ class SimulationGrasp(Node):
         self.models = {}
         self.attached_name = None
         self.gripper_to_object = None
-        self.publisher = self.create_publisher(
-            ModelState, '/gazebo/set_model_state', 10)
+        self.pending_pose = None
+        self.set_entity = self.create_client(
+            SetEntityState, '/gazebo/set_entity_state')
         self.create_subscription(LinkStates, '/gazebo/link_states',
                                  self.links_callback, 10)
         self.create_subscription(ModelStates, '/gazebo/model_states',
@@ -143,11 +145,17 @@ class SimulationGrasp(Node):
                     self.get_logger().info(
                         f'Attached {name} at {distance:.3f} m.')
         if self.attached_name:
-            state = ModelState()
-            state.model_name = self.attached_name
+            if not self.set_entity.service_is_ready():
+                return
+            if self.pending_pose is not None and not self.pending_pose.done():
+                return
+            state = EntityState()
+            state.name = self.attached_name
             state.reference_frame = 'world'
             state.pose = compose(self.gripper_pose, self.gripper_to_object)
-            self.publisher.publish(state)
+            request = SetEntityState.Request()
+            request.state = state
+            self.pending_pose = self.set_entity.call_async(request)
 
 
 def main():
