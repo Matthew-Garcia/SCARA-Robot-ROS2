@@ -52,7 +52,6 @@
       </sensor>
     </link></model>
 
-    <plugin name="scara_grasp_world" filename="libscara_grasp_world_plugin.so"><robot>scara</robot><gripper_link>gripper_base_link</gripper_link><left_joint>left_finger_joint</left_joint><right_joint>right_finger_joint</right_joint><targets>conveyor_cube_red conveyor_cube_green conveyor_cube_blue</targets></plugin>
     <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so"><ros><namespace>/gazebo</namespace></ros><update_rate>30.0</update_rate></plugin>
     <gui><camera name="user_camera"><pose>0.85 -0.85 0.70 0 0.45 2.35</pose></camera></gui>
   </world>

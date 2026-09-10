@@ -1569,11 +1569,6 @@
         <visual name="visual_0"><geometry><box><size>0.028 0.028 0.032</size></box></geometry><material><ambient>0.60 0.10 0.85 1</ambient><diffuse>0.72 0.18 0.98 1</diffuse></material></visual>
       </link>
     </model>
-    <plugin name="scara_grasp_world" filename="libscara_grasp_world_plugin.so">
-      <robot>scara</robot><gripper_link>gripper_base_link</gripper_link>
-      <left_joint>left_finger_joint</left_joint><right_joint>right_finger_joint</right_joint>
-      <targets>pickup_cube pickup_sphere pickup_cylinder pickup_hex_prism hanoi_ring_large hanoi_ring_medium hanoi_ring_small</targets>
-    </plugin>
     <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
       <ros>
         <namespace>/gazebo</namespace>

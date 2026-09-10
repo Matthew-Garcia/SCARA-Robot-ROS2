@@ -12,28 +12,29 @@
 
 namespace gazebo
 {
-class ScaraGraspWorldPlugin final : public WorldPlugin
+class ScaraGraspWorldPlugin final : public SystemPlugin
 {
 public:
-  void Load(physics::WorldPtr world, sdf::ElementPtr sdf) override
+  void Load(int, char **) override
   {
-    world_ = std::move(world);
-    robot_name_ = sdf->Get<std::string>("robot", "scara").first;
-    gripper_link_name_ = sdf->Get<std::string>("gripper_link", "gripper_base_link").first;
-    left_joint_name_ = sdf->Get<std::string>("left_joint", "left_finger_joint").first;
-    right_joint_name_ = sdf->Get<std::string>("right_joint", "right_finger_joint").first;
-    attach_distance_ = sdf->Get<double>("attach_distance", 0.090).first;
-    closed_threshold_ = sdf->Get<double>("closed_threshold", 0.006).first;
-    open_threshold_ = sdf->Get<double>("open_threshold", 0.016).first;
-    std::istringstream names(sdf->Get<std::string>("targets", "pickup_cube").first);
-    for (std::string name; names >> name;) target_names_.push_back(name);
-    update_connection_ = event::Events::ConnectWorldUpdateBegin(
-      std::bind(&ScaraGraspWorldPlugin::OnUpdate, this));
-    gzmsg << "[scara_grasp] World plugin ready for " << target_names_.size()
-          << " pickup objects.\n";
+    target_names_ = {
+      "pickup_cube", "pickup_sphere", "pickup_cylinder", "pickup_hex_prism",
+      "hanoi_ring_large", "hanoi_ring_medium", "hanoi_ring_small",
+      "conveyor_cube_red", "conveyor_cube_green", "conveyor_cube_blue"};
+    world_created_connection_ = event::Events::ConnectWorldCreated(
+      std::bind(&ScaraGraspWorldPlugin::OnWorldCreated, this, std::placeholders::_1));
+    gzerr << "[scara_grasp] System plugin loaded.\n";
   }
 
 private:
+  void OnWorldCreated(const std::string & world_name)
+  {
+    world_ = physics::get_world(world_name);
+    update_connection_ = event::Events::ConnectWorldUpdateBegin(
+      std::bind(&ScaraGraspWorldPlugin::OnUpdate, this));
+    gzerr << "[scara_grasp] Connected to world " << world_name << ".\n";
+  }
+
   bool ResolveRobot()
   {
     if (robot_ && gripper_link_ && left_joint_ && right_joint_) return true;
@@ -99,11 +100,12 @@ private:
   physics::JointPtr right_joint_;
   physics::JointPtr attached_joint_;
   physics::ModelPtr attached_model_;
+  event::ConnectionPtr world_created_connection_;
   event::ConnectionPtr update_connection_;
   std::vector<std::string> target_names_;
   std::string robot_name_, gripper_link_name_, left_joint_name_, right_joint_name_;
   double attach_distance_{0.090}, closed_threshold_{0.006}, open_threshold_{0.016};
 };
 
-GZ_REGISTER_WORLD_PLUGIN(ScaraGraspWorldPlugin)
+GZ_REGISTER_SYSTEM_PLUGIN(ScaraGraspWorldPlugin)
 }  // namespace gazebo

@@ -25,13 +25,7 @@ def setup(context):
     world_value=LaunchConfiguration('world').perform(context)
     world_path=Path(world_value)
     if not world_path.is_absolute():world_path=bringup/'worlds'/world_path
-    if sim:
-        plugin_path=bringup.parents[1]/'lib/libscara_grasp_world_plugin.so'
-        runtime_world=Path('/tmp')/f'scara_runtime_world_{os.getpid()}.world'
-        runtime_world.write_text(world_path.read_text().replace(
-            'filename="libscara_grasp_world_plugin.so"',
-            f'filename="{plugin_path}"'))
-        world_path=runtime_world
+    plugin_path=bringup.parents[1]/'lib/libscara_grasp_world_plugin.so'
     controllers=str(bringup/'config/controllers.yaml')
     urdf=xacro.process_file(str(desc/'urdf/scara.urdf.xacro'),mappings={
         'mode':mode,'description_share':str(desc),'controllers_file':controllers}).toxml()
@@ -66,7 +60,8 @@ def setup(context):
              RegisterEventHandler(OnProcessExit(target_action=gripper,on_exit=after_success(ready))),publisher]
     if sim:
         gazebo=IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('gazebo_ros'))/'launch/gazebo.launch.py')),
-            launch_arguments={'world':str(world_path),'gui':gui,'verbose':'false','pause':'false'}.items())
+            launch_arguments={'world':str(world_path),'gui':gui,'verbose':'false','pause':'false',
+                              'extra_gazebo_args':f'-s {plugin_path}'}.items())
         spawn=Node(package='gazebo_ros',executable='spawn_entity.py',arguments=['-entity','scara','-topic','robot_description','-timeout','120'],output='screen')
         actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,spawn]
     else:
