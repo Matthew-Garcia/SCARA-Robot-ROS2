@@ -67,6 +67,7 @@ def test_separate_opencv_conveyor_world_and_launch():
     camera=models['overhead_camera'].find("link/sensor[@type='camera']")
     assert camera is not None
     assert camera.find("plugin[@filename='libgazebo_ros_camera.so']") is not None
+    assert camera.findtext('plugin/camera_name') == 'camera'
     assert CONVEYOR.find("plugin[@filename='libgazebo_ros_state.so']") is not None
     assert (B/'launch/conveyor_demo.launch.py').is_file()
     vision=(B/'scripts/conveyor_vision.py').read_text()

@@ -48,7 +48,7 @@
     <model name="overhead_camera"><static>true</static><pose>0.26 0.155 0.55 0 1.5708 0</pose><link name="camera_link">
       <visual name="housing"><geometry><box><size>0.05 0.05 0.035</size></box></geometry><material><ambient>0.12 0.12 0.14 1</ambient><diffuse>0.18 0.18 0.20 1</diffuse></material></visual>
       <sensor name="color_camera" type="camera"><always_on>true</always_on><update_rate>20</update_rate><camera><horizontal_fov>0.52</horizontal_fov><image><width>640</width><height>480</height><format>R8G8B8</format></image><clip><near>0.05</near><far>5</far></clip></camera>
-        <plugin name="conveyor_camera" filename="libgazebo_ros_camera.so"><ros><namespace>/conveyor</namespace><remapping>image_raw:=camera/image_raw</remapping><remapping>camera_info:=camera/camera_info</remapping></ros><camera_name>overhead</camera_name><frame_name>overhead_camera</frame_name></plugin>
+        <plugin name="conveyor_camera" filename="libgazebo_ros_camera.so"><ros><namespace>/conveyor</namespace></ros><camera_name>camera</camera_name><frame_name>overhead_camera</frame_name></plugin>
       </sensor>
     </link></model>
 
