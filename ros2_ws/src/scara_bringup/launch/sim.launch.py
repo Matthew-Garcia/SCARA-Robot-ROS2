@@ -49,7 +49,10 @@ def setup(context):
                 return [LogInfo(msg='ERROR: SCARA startup failed; inspect the preceding process error.'),EmitEvent(event=Shutdown(reason='SCARA startup failure'))]
             return next_actions
         return callback
-    actions=[SetEnvironmentVariable('GAZEBO_MODEL_PATH',os.pathsep.join(filter(None,[str(bringup/'models'),os.environ.get('GAZEBO_MODEL_PATH','')]))),RegisterEventHandler(OnProcessExit(target_action=broadcaster,on_exit=after_success([controller]))),
+    plugin_path=str(bringup.parents[1]/'lib')
+    actions=[SetEnvironmentVariable('GAZEBO_MODEL_PATH',os.pathsep.join(filter(None,[str(bringup/'models'),os.environ.get('GAZEBO_MODEL_PATH','')]))),
+             SetEnvironmentVariable('GAZEBO_PLUGIN_PATH',os.pathsep.join(filter(None,[plugin_path,os.environ.get('GAZEBO_PLUGIN_PATH','')]))),
+             RegisterEventHandler(OnProcessExit(target_action=broadcaster,on_exit=after_success([controller]))),
              RegisterEventHandler(OnProcessExit(target_action=controller,on_exit=after_success([gripper]))),
              RegisterEventHandler(OnProcessExit(target_action=gripper,on_exit=after_success(ready))),publisher]
     if sim:
