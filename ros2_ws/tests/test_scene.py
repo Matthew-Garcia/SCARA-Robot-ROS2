@@ -12,7 +12,7 @@ def numbers(text):return [float(v) for v in text.split()]
 
 def test_exactly_three_movable_hanoi_rings():
     movable=[o for o in CONFIG['objects'] if not o['static']]
-    assert {o['name'] for o in movable}=={'pickup_cube','pickup_sphere','hanoi_ring_large','hanoi_ring_medium','hanoi_ring_small'}
+    assert {o['name'] for o in movable}=={'pickup_cube','pickup_sphere','pickup_cylinder','pickup_hex_prism','hanoi_ring_large','hanoi_ring_medium','hanoi_ring_small'}
     rings=[o for o in movable if o['name'].startswith('hanoi_ring')]
     assert len(rings)==3
     for ring in rings:
@@ -26,6 +26,17 @@ def test_exactly_three_movable_hanoi_rings():
     # All rings start stacked on the left peg, above the raised board.
     assert [o['pose'][2] for o in rings]==pytest.approx([.057,.065,.073])
     assert all(o['pose'][:2]==[.2,-.115] for o in rings)
+
+def test_colored_pickup_set_and_printable_tray():
+    by_name={o['name']:o for o in CONFIG['objects']}
+    for name in ['pickup_cube','pickup_sphere','pickup_cylinder','pickup_hex_prism']:
+        assert len(by_name[name]['color'])==4
+        assert by_name[name]['color'][3]==1
+    tray=by_name['placement_tray']
+    assert tray['static'] and tray['shapes'][0]['size']==[.24,.070,.010]
+    cad=B.parents[2]/'cad/development'
+    assert (cad/'pickup_placement_tray.scad').is_file()
+    assert (cad/'pickup_placement_tray.stl').stat().st_size>84
 
 def test_moveit_and_gazebo_collision_geometry_match():
     models={m.attrib['name']:m for m in WORLD.findall('model')}

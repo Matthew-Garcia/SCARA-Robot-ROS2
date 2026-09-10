@@ -11,19 +11,29 @@ WS=Path(__file__).resolve().parents[1]
 DESC=WS/'src/scara_description'
 M=json.loads((DESC/'config/cad_manifest.json').read_text())
 
+def matches_source_hash(path, expected):
+    data=path.read_bytes()
+    if hashlib.sha256(data).hexdigest()==expected:return True
+    # The source manifest records the original Windows CRLF bytes. Git stores
+    # text CAD/firmware files with LF, so verify the canonical CRLF form too.
+    crlf=data.replace(b'\r\n',b'\n').replace(b'\n',b'\r\n')
+    return hashlib.sha256(crlf).hexdigest()==expected
+
 def urdf(mode):
     return ET.fromstring(xacro.process_file(str(DESC/'urdf/scara.urdf.xacro'),mappings={
       'mode':mode,'description_share':str(DESC),'controllers_file':str(WS/'src/scara_bringup/config/controllers.yaml')}).toxml())
 
 def test_original_cad_and_manifest():
-    assert hashlib.sha256((WS.parent/M['source']).read_bytes()).hexdigest()==M['source_sha256']
+    assert matches_source_hash(WS.parent/M['source'],M['source_sha256'])
     ids=[p['index'] for link in M['links'].values() for p in link['parts']]
     assert sorted(ids)==list(range(109))
     assert abs(M['geometry']['l1']-.228)<1e-9
     assert abs(M['geometry']['l2']-.1365)<1e-9
 
 def test_control_and_mesh_paths():
-    names=['shoulder_joint','z_joint','elbow_joint','wrist_joint']
+    arm=['shoulder_joint','z_joint','elbow_joint','wrist_joint']
+    fingers=['left_finger_joint','right_finger_joint']
+    names=arm+fingers
     for mode,plugin in [('mock','mock_components/GenericSystem'),('gazebo','gazebo_ros2_control/GazeboSystem')]:
         root=urdf(mode)
         assert root.find('ros2_control/hardware/plugin').text==plugin
@@ -33,7 +43,8 @@ def test_control_and_mesh_paths():
         for inertia in root.findall('.//inertia'):
             assert all(float(inertia.attrib[key])>0 for key in ['ixx','iyy','izz'])
     config=yaml.safe_load((WS/'src/scara_bringup/config/controllers.yaml').read_text())
-    assert config['arm_controller']['ros__parameters']['joints']==names
+    assert config['arm_controller']['ros__parameters']['joints']==arm
+    assert config['gripper_controller']['ros__parameters']['joints']==fingers
 
 def transform(xyz,yaw=0):
     c,s=math.cos(yaw),math.sin(yaw);T=np.eye(4);T[:3,:3]=[[c,-s,0],[s,c,0],[0,0,1]];T[:3,3]=xyz;return T
@@ -58,4 +69,4 @@ def test_all_original_assets_preserved_after_reorganization():
     source=json.loads((root/'docs/source_manifest.json').read_text())
     assert len(source['files'])==77
     for record in source['files']:
-        assert hashlib.sha256((root/record['path']).read_bytes()).hexdigest()==record['sha256'],record['path']
+        assert matches_source_hash(root/record['path'],record['sha256']),record['path']

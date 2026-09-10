@@ -5,6 +5,8 @@ controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 arm_controller:
   ros__parameters:
     joints:
@@ -35,3 +37,25 @@ arm_controller:
       wrist_joint:
         trajectory: 0.1
         goal: 0.02
+gripper_controller:
+  ros__parameters:
+    joints:
+    - left_finger_joint
+    - right_finger_joint
+    command_interfaces:
+    - position
+    state_interfaces:
+    - position
+    - velocity
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      goal_time: 1.0
+      stopped_velocity_tolerance: 0.01
+      left_finger_joint:
+        trajectory: 0.005
+        goal: 0.001
+      right_finger_joint:
+        trajectory: 0.005
+        goal: 0.001

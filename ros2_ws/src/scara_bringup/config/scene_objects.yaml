@@ -23,9 +23,9 @@ objects:
     - 0
     - 0
   color:
-  - 0.28
-  - 0.33
-  - 0.38
+  - 0.78
+  - 0.50
+  - 0.24
   - 1
 - name: pickup_cube
   pose:
@@ -52,8 +52,8 @@ objects:
   mass: 0.025
   color:
   - 0.95
-  - 0.35
-  - 0.12
+  - 0.16
+  - 0.16
   - 1
 - name: pickup_sphere
   pose:
@@ -76,9 +76,9 @@ objects:
     - 0
   mass: 0.02
   color:
-  - 0.18
-  - 0.65
-  - 0.95
+  - 0.12
+  - 0.90
+  - 0.38
   - 1
 - name: hanoi_stand
   pose:
@@ -1052,3 +1052,30 @@ objects:
   - 0.44
   - 1
   mesh: model://hanoi_ring_small/meshes/ring.stl
+- name: placement_tray
+  pose: [0.27, -0.035, 0.049, 0, 0, 0]
+  static: true
+  shapes:
+  - type: box
+    size: [0.24, 0.070, 0.010]
+    pose: [0, 0, 0, 0, 0, 0]
+  color: [0.02, 0.35, 1.0, 1]
+- name: pickup_cylinder
+  pose: [0.205, 0.135, 0.062, 0, 0, 0]
+  static: false
+  shapes:
+  - type: cylinder
+    radius: 0.015
+    length: 0.034
+    pose: [0, 0, 0, 0, 0, 0]
+  mass: 0.022
+  color: [1.0, 0.82, 0.08, 1]
+- name: pickup_hex_prism
+  pose: [0.35, 0.055, 0.061, 0, 0, 0.785398]
+  static: false
+  shapes:
+  - type: box
+    size: [0.028, 0.028, 0.032]
+    pose: [0, 0, 0, 0, 0, 0]
+  mass: 0.024
+  color: [0.72, 0.18, 0.98, 1]

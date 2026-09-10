@@ -39,6 +39,7 @@ def setup(context):
     publisher=Node(package='robot_state_publisher',executable='robot_state_publisher',parameters=[robot,{'use_sim_time':sim}],output='screen')
     broadcaster=Node(package='controller_manager',executable='spawner',arguments=['joint_state_broadcaster','--controller-manager-timeout','120'],output='screen')
     controller=Node(package='controller_manager',executable='spawner',arguments=['arm_controller','--controller-manager-timeout','120'],output='screen')
+    gripper=Node(package='controller_manager',executable='spawner',arguments=['gripper_controller','--controller-manager-timeout','120'],output='screen')
     move_group=Node(package='moveit_ros_move_group',executable='move_group',parameters=params,output='screen')
     ready=[move_group,Node(package='scara_bringup',executable='scene_objects.py',parameters=[{'use_sim_time':sim,'dynamic_scene':sim}],output='screen')]
     if rviz:ready.append(Node(package='rviz2',executable='rviz2',arguments=['-d',str(moveit/'config/scara.rviz')],parameters=params,output='screen'))
@@ -49,7 +50,8 @@ def setup(context):
             return next_actions
         return callback
     actions=[SetEnvironmentVariable('GAZEBO_MODEL_PATH',os.pathsep.join(filter(None,[str(bringup/'models'),os.environ.get('GAZEBO_MODEL_PATH','')]))),RegisterEventHandler(OnProcessExit(target_action=broadcaster,on_exit=after_success([controller]))),
-             RegisterEventHandler(OnProcessExit(target_action=controller,on_exit=after_success(ready))),publisher]
+             RegisterEventHandler(OnProcessExit(target_action=controller,on_exit=after_success([gripper]))),
+             RegisterEventHandler(OnProcessExit(target_action=gripper,on_exit=after_success(ready))),publisher]
     if sim:
         gazebo=IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('gazebo_ros'))/'launch/gazebo.launch.py')),
             launch_arguments={'world':str(bringup/'worlds/scara.world'),'gui':gui,'verbose':'false','pause':'false'}.items())

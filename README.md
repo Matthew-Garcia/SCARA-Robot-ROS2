@@ -29,13 +29,9 @@ ROS 2 Humble simulation of the SCARA manipulator running in Gazebo and RViz2 wit
 
 ## Start here
 
-*Preview rendered from the original STEP assembly. This is a CAD visualization, not a screenshot of a running Gazebo session.*
-
-## Start here
-
 - [Install, build, and launch the ROS workspace](ros2_ws/README.md)
 - [Robot frames and forward/inverse kinematics](docs/kinematics.md)
-- [Cube, sphere, and three-piece Hanoi scene](docs/manipulation-scene.md)
+- [Functional gripper, colored pickup set, and three-piece Hanoi scene](docs/manipulation-scene.md)
 - [What has been tested](docs/validation.md)
 - [Physical hardware integration requirements](docs/hardware-integration.md)
 - [Original asset locations and preservation](docs/repository-layout.md)
@@ -46,12 +42,12 @@ ROS 2 Humble simulation of the SCARA manipulator running in Gazebo and RViz2 wit
 | --- | --- | --- |
 | Robot description | Original STEP converted into five rigid links, with 109 CAD part instances | Source hashes and assembly-frame reconstruction checked |
 | Kinematics | Four-axis analytical FK/IK; elbow branches, joint limits, angle wraps, yaw | 10,000 standalone C++ round trips passed |
-| ros2_control | Joint-state broadcaster and arm trajectory controller; Gazebo/mock backends | Humble runtime verification pending |
+| ros2_control | Arm and two-finger trajectory controllers; Gazebo/mock backends | Automated Humble verification included |
 | MoveIt 2 | Custom analytical plugin, OMPL planning, trajectory execution configuration | Humble plugin build and integration verification pending |
 | Visualization | RViz2 configuration and Gazebo Classic world/launch | GUI runtime verification pending |
-| Manipulation scene | Dynamic cube, sphere and three Hanoi rings; matching MoveIt collision world | Scene geometry parity checked; physics/grasp runtime pending |
+| Manipulation scene | Four colored pickup solids, three Hanoi rings, placement tray, and matching MoveIt world | Scene parity and grasp integration checks included |
 | Embedded code | Original Arduino stepper/servo controller and Processing GUI | Preserved without modifying their behavior |
-| Gripper | Original CAD opening and mechanism represented visually | Actuation and simulated grasping are not implemented |
+| Gripper | Synchronized white sliding fingers with Gazebo attach/release behavior | Simulation pick/lift/release implemented; physical servo integration pending |
 
 Simulation mass properties and collision hulls are approximations. This project does not claim verified payload, torque, positioning accuracy, or a feedback-based physical ROS controller.
 
@@ -61,6 +57,7 @@ Simulation mass properties and collision hulls are approximations. This project 
 | --- | --- |
 | [`cad/solidworks/`](cad/solidworks/) | Original SolidWorks assemblies and part files, with original filenames |
 | [`cad/step/`](cad/step/) | Complete robot STEP assembly and individual STEP exports |
+| [`cad/development/`](cad/development/) | Printable 240 × 70 × 10 mm four-station placement tray (SCAD and STL) |
 | [`firmware/arduino/SCARA_Robot/`](firmware/arduino/SCARA_Robot/) | Original Arduino sketch, in an IDE-compatible sketch folder |
 | [`software/processing/GUI_for_SCARA_Robot/`](software/processing/GUI_for_SCARA_Robot/) | Original Processing GUI, in its matching sketch folder |
 | [`ros2_ws/src/`](ros2_ws/src/) | Description, kinematics, MoveIt configuration, and bringup packages |
@@ -105,6 +102,15 @@ Send a Cartesian target through MoveIt from another sourced terminal:
 
 ```bash
 ros2 run scara_bringup move_to_pose.py --x 0.33 --y 0.02 --z 0.09 --yaw 0
+```
+
+Operate the gripper or run a complete Gazebo pick-and-place demonstration:
+
+```bash
+ros2 run scara_bringup gripper_command.py open
+ros2 run scara_bringup gripper_command.py close
+ros2 run scara_bringup pick_lift_demo.py --object cube
+# Other choices: sphere, cylinder, hex
 ```
 
 The original robot has four controlled axes: shoulder rotation, vertical carriage motion, elbow rotation, and wrist yaw. Roll and pitch commands are unreachable.

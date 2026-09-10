@@ -1,11 +1,13 @@
 # Gazebo manipulation scene
 
-The default launch includes a cube, a sphere, and a **three-piece Tower of Hanoi** with three pegs. Five objects are dynamic rigid bodies; the work surface and peg stand are static. The robot CAD is unchanged.
+The default launch includes four colored pickup solids, a blue placement tray, and a **three-piece Tower of Hanoi**. Seven objects are dynamic rigid bodies; the wood work surface, tray, and peg stand are static. The original robot CAD is preserved.
 
 | Object | Dimensions | Initial center in world, metres |
 | --- | --- | --- |
-| Cube | 30 mm edges | (0.255, 0.105, 0.060) |
-| Sphere | 32 mm diameter | (0.310, 0.120, 0.061) |
+| Red cube | 30 mm edges | (0.255, 0.105, 0.060) |
+| Green sphere | 32 mm diameter | (0.310, 0.120, 0.061) |
+| Yellow cylinder | 30 mm diameter × 34 mm | (0.205, 0.135, 0.062) |
+| Purple diamond block | 28 × 28 × 32 mm, rotated 45° | (0.350, 0.055, 0.061) |
 | Large Hanoi ring | 48 mm outer diameter, 10 mm hole, 8 mm thick | (0.200, −0.115, 0.057) |
 | Medium Hanoi ring | 38 mm outer diameter, 10 mm hole, 8 mm thick | (0.200, −0.115, 0.065) |
 | Small Hanoi ring | 28 mm outer diameter, 10 mm hole, 8 mm thick | (0.200, −0.115, 0.073) |
@@ -22,16 +24,18 @@ Gazebo gives the movable objects gravity, mass, inertia and friction. Rings use 
 
 `scene_objects.py` mirrors the models' world poses from `/gazebo/model_states` to MoveIt's `/planning_scene` at 1 Hz. Cube, sphere, surface, board, pegs and segmented ring collision shapes match between the two systems. Mock mode publishes the same initial scene without physics. This is a slow scene synchronization loop for demonstrations, not high-rate perception or contact feedback.
 
-Plan an approach above the cube:
+Operate the fingers and run the automatic demonstration:
 
 ```bash
-ros2 run scara_bringup move_to_pose.py --x 0.255 --y 0.105 --z 0.110 --yaw 0 --plan-only
+ros2 run scara_bringup gripper_command.py open
+ros2 run scara_bringup gripper_command.py close
+ros2 run scara_bringup pick_lift_demo.py --object cube
 ```
 
-Omit `--plan-only` to request execution if MoveIt finds a collision-free path. The target is above the cube; it is not a grasp command.
+The two fingers are independently represented but commanded together. In Gazebo, closing near an approved object attaches it with a temporary fixed physics joint; opening releases it. The demonstration supports `cube`, `sphere`, `cylinder`, and `hex`. An autonomous Hanoi solver is not included.
 
-**The original gripper is still fixed at its exported opening.** This addition provides physical props and collision-aware approach planning. It does not implement jaw actuation, grasp attachment, pick-and-place completion, or an autonomous Hanoi solver. The scene is prepared for those next steps, without faking successful grasps by teleporting or attaching objects.
+The placement fixture is in `cad/development/` as both OpenSCAD and STL. It measures 240 × 70 × 10 mm and has four shallow locating pockets.
 
-To restore the initial object arrangement, stop and relaunch the simulation. For the scene test, run `ros2 run scara_bringup check_stack.py`; it checks that all seven scene models appear in MoveIt before testing arm planning and execution.
+To restore the initial arrangement, stop and relaunch the simulation. `check_stack.py` checks all ten scene models, both controllers, arm planning/execution, and gripper motion.
 
 Configuration: `ros2_ws/src/scara_bringup/config/scene_objects.yaml`. Physical world: `ros2_ws/src/scara_bringup/worlds/scara.world`. Keep both synchronized; `test_scene.py` checks parity.

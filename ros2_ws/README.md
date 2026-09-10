@@ -34,11 +34,29 @@ source install/setup.bash
 ros2 launch scara_bringup sim.launch.py
 ```
 
-This starts the local Gazebo world, spawns the original robot, activates the joint-state broadcaster and trajectory controller, then starts MoveIt and RViz. Gazebo provides `/clock`; all participating ROS nodes use simulation time. The Gazebo plugin owns the controller manager.
+This starts the bright Gazebo workspace, wood board, original robot, arm and gripper controllers, MoveIt, and RViz. Gazebo provides `/clock`; all participating ROS nodes use simulation time. The Gazebo plugin owns the controller manager.
 
 In RViz, expand **MotionPlanning**, select planning group **arm**, choose **ready** or **cad_reference** as the goal, then **Plan** and **Execute**. The `home` state has straight arms; `cad_reference` reconstructs the source STEP assembly pose. The original gripper is rendered in its exported configuration.
 
-The SCARA has four controlled axes: X/Y positioning, vertical motion and yaw. For interactive pose goals, translate the marker or rotate about Z; roll and pitch are unreachable and are rejected by the solver.
+The SCARA arm has four controlled axes: X/Y positioning, vertical motion and yaw. The gripper adds two synchronized sliding-finger joints. For interactive pose goals, translate the marker or rotate about Z; roll and pitch are unreachable and are rejected by the solver.
+
+### Gripper and automatic pick/lift demo
+
+In a second sourced terminal, open or close the white gripper:
+
+```bash
+ros2 run scara_bringup gripper_command.py open
+ros2 run scara_bringup gripper_command.py close
+```
+
+Run a complete Gazebo-only pick, lift, carry, and release sequence:
+
+```bash
+ros2 run scara_bringup pick_lift_demo.py --object cube
+# cube, sphere, cylinder, or hex
+```
+
+The grasp plugin creates a temporary fixed physics joint only when the fingers close near an approved pickup object and removes it when the fingers open. It does not teleport objects. Relaunch the world to reset all object positions.
 
 ### RViz + MoveIt without Gazebo
 
@@ -62,9 +80,9 @@ ros2 run scara_bringup move_to_pose.py --x 0.33 --y 0.02 --z 0.09 --yaw 0 --plan
 
 The client obtains current joint states, requests collision-aware analytical IK, and submits the resulting goal to MoveIt. MoveIt plans, time-parameterizes and executes via `/arm_controller/follow_joint_trajectory`. Unreachable targets, rejected goals and execution failures are reported.
 
-## Cube, sphere, and three-piece Hanoi
+## Colored pickup set, placement tray, and three-piece Hanoi
 
-The default scene includes five movable objects and a raised work surface with a three-peg stand. Their poses are mirrored into MoveIt for collision checking. See the [scene guide](../docs/manipulation-scene.md) for dimensions, approach commands, and the remaining gripper-actuation limitation.
+The default scene includes a red cube, green sphere, yellow cylinder, purple diamond block, three movable Hanoi rings, a blue placement tray, and a raised wood work surface. Their poses are mirrored into MoveIt for collision checking. See the [scene guide](../docs/manipulation-scene.md) for dimensions and commands.
 
 ## Forward and inverse kinematics
 
@@ -72,10 +90,10 @@ The controlled joint order is:
 
 | Joint | Motion | Software position range |
 | --- | --- | --- |
-| `shoulder_joint` | rotation of tower and arm | −90° to 266° |
-| `z_joint` | carriage translation along tower | −0.05 to +0.05 m |
-| `elbow_joint` | forearm rotation | −150° to 150° |
-| `wrist_joint` | gripper yaw | −162° to 162° |
+| `shoulder_joint` | rotation of tower and arm | −90° to 266°; 1.2 rad/s |
+| `z_joint` | carriage translation along tower | −0.05 to +0.05 m; 0.08 m/s |
+| `elbow_joint` | forearm rotation | −150° to 150°; 1.5 rad/s |
+| `wrist_joint` | gripper yaw | −162° to 162°; 2.0 rad/s |
 
 These ranges come from the original Processing GUI; they are not independently measured mechanical limits. Zero slide position is the exported CAD carriage height. The software frame convention must be calibrated against physical motor zeros before hardware use.
 
@@ -98,7 +116,7 @@ The analytical MoveIt plugin solves both elbow branches, enumerates angle wraps 
 - **109 STEP part instances** are assigned to five rigid bodies. The two loose laser accessory components beside the base are recorded as excluded; their original source files are retained.
 - Visual geometry preserves the actual CAD surfaces. Collision geometry uses convex hulls of individual structural parts; small belts, bearings and fasteners do not have separate collision hulls. These hulls are conservative approximations, not exact contact surfaces.
 - Inertias are positive box approximations with explicitly assumed link masses, suitable for initial position-control simulation. They are **not measured mass properties** and do not establish torque or payload performance.
-- The existing gripper, servo horn and linkage remain at the source CAD opening. **Gripper actuation and object grasping are not implemented.** The four arm axes are controlled; this avoids inventing a different gripper mechanism.
+- The original gripper CAD remains preserved. Two simple white collision fingers and a simulation-only attach/release plugin provide reliable Gazebo grasp demonstrations. Physical servo geometry, force, limits, and firmware still require measurement and validation.
 - No hardware serial plugin is enabled. The existing Arduino firmware uses blocking motion, lacks feedback packets, and treats startup as zero without switch-seeking homing. It cannot honestly provide a feedback-based ros2_control hardware interface unchanged. See [hardware integration](../docs/hardware-integration.md).
 - Adjacent bodies are excluded from MoveIt self-collision checking. Nonadjacent bodies remain checked. Gazebo self-contact is disabled to avoid contact forces between assembled components; MoveIt supplies geometric self-collision checking.
 - Gazebo Classic is the legacy simulator paired here with Humble; use the documented Ubuntu 22.04 environment.

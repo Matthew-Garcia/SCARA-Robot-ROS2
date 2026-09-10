@@ -5,7 +5,7 @@ Visualization Manager:
   Class: ''
   Global Options:
     Fixed Frame: world
-    Background Color: 32; 36; 43
+    Background Color: 245; 245; 245
   Displays:
   - Class: rviz_default_plugins/Grid
     Name: Grid

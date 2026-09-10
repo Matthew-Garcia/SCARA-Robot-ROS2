@@ -2,6 +2,7 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 moveit_simple_controller_manager:
   controller_names:
   - arm_controller
+  - gripper_controller
   arm_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
@@ -11,3 +12,10 @@ moveit_simple_controller_manager:
     - z_joint
     - elbow_joint
     - wrist_joint
+  gripper_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+    - left_finger_joint
+    - right_finger_joint

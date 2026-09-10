@@ -11,6 +11,8 @@ for index,mode in enumerate(['mock','gazebo']):
         launch=subprocess.Popen(['ros2','launch','scara_bringup','sim.launch.py',f'mode:={mode}','gui:=false','rviz:=false'],env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
         try:
             subprocess.run(['ros2','run','scara_bringup','check_stack.py'],env=env,check=True,timeout=180)
+            if mode == 'gazebo':
+                subprocess.run(['ros2','run','scara_bringup','pick_lift_demo.py','--object','cube'],env=env,check=True,timeout=90)
         except Exception:
             print(path.read_text());raise
         finally:
