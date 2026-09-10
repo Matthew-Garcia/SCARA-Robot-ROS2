@@ -91,12 +91,23 @@ class SimulationGrasp(Node):
 
     def links_callback(self, message):
         for name, pose in zip(message.name, message.pose):
-            if name.endswith('::gripper_base_link'):
-                self.gripper_pose = pose
-            elif name.endswith('::left_finger_link'):
+            if name.endswith('::left_finger_link'):
                 self.left_finger_pose = pose
             elif name.endswith('::right_finger_link'):
                 self.right_finger_pose = pose
+        # Gazebo Classic may collapse fixed links (including gripper_base_link)
+        # while converting URDF to SDF.  The midpoint of the two moving finger
+        # links is always present and is the physically useful grasp frame.
+        if self.left_finger_pose is not None and self.right_finger_pose is not None:
+            midpoint = Pose()
+            midpoint.position.x = (self.left_finger_pose.position.x +
+                                   self.right_finger_pose.position.x) / 2.0
+            midpoint.position.y = (self.left_finger_pose.position.y +
+                                   self.right_finger_pose.position.y) / 2.0
+            midpoint.position.z = (self.left_finger_pose.position.z +
+                                   self.right_finger_pose.position.z) / 2.0
+            midpoint.orientation = self.left_finger_pose.orientation
+            self.gripper_pose = midpoint
 
     def models_callback(self, message):
         self.models = dict(zip(message.name, message.pose))
