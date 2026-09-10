@@ -108,6 +108,5 @@
 <gazebo reference="gripper_base_link"><selfCollide>false</selfCollide><material>Gazebo/White</material></gazebo>
 <gazebo reference="left_finger_link"><selfCollide>false</selfCollide><material>Gazebo/White</material></gazebo>
 <gazebo reference="right_finger_link"><selfCollide>false</selfCollide><material>Gazebo/White</material></gazebo>
-<gazebo><plugin name="scara_grasp" filename="libscara_grasp_plugin.so"><gripper_link>gripper_base_link</gripper_link><left_joint>left_finger_joint</left_joint><right_joint>right_finger_joint</right_joint><attach_distance>0.072</attach_distance><closed_threshold>0.006</closed_threshold><open_threshold>0.016</open_threshold><targets>pickup_cube pickup_sphere pickup_cylinder pickup_hex_prism hanoi_ring_large hanoi_ring_medium hanoi_ring_small</targets></plugin></gazebo>
 </xacro:if>
 </robot>

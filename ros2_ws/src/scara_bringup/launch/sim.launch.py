@@ -42,6 +42,8 @@ def setup(context):
     gripper=Node(package='controller_manager',executable='spawner',arguments=['gripper_controller','--controller-manager-timeout','120'],output='screen')
     move_group=Node(package='moveit_ros_move_group',executable='move_group',parameters=params,output='screen')
     ready=[move_group,Node(package='scara_bringup',executable='scene_objects.py',parameters=[{'use_sim_time':sim,'dynamic_scene':sim}],output='screen')]
+    if sim:
+        ready.append(Node(package='scara_bringup',executable='simulation_grasp.py',parameters=[{'use_sim_time':True}],output='screen'))
     if rviz:ready.append(Node(package='rviz2',executable='rviz2',arguments=['-d',str(moveit/'config/scara.rviz')],parameters=params,output='screen'))
     def after_success(next_actions):
         def callback(event,context):
@@ -49,9 +51,7 @@ def setup(context):
                 return [LogInfo(msg='ERROR: SCARA startup failed; inspect the preceding process error.'),EmitEvent(event=Shutdown(reason='SCARA startup failure'))]
             return next_actions
         return callback
-    plugin_path=str(bringup.parents[1]/'lib')
     actions=[SetEnvironmentVariable('GAZEBO_MODEL_PATH',os.pathsep.join(filter(None,[str(bringup/'models'),os.environ.get('GAZEBO_MODEL_PATH','')]))),
-             SetEnvironmentVariable('GAZEBO_PLUGIN_PATH',os.pathsep.join(filter(None,[plugin_path,os.environ.get('GAZEBO_PLUGIN_PATH','')]))),
              RegisterEventHandler(OnProcessExit(target_action=broadcaster,on_exit=after_success([controller]))),
              RegisterEventHandler(OnProcessExit(target_action=controller,on_exit=after_success([gripper]))),
              RegisterEventHandler(OnProcessExit(target_action=gripper,on_exit=after_success(ready))),publisher]
