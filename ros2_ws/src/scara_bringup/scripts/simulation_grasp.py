@@ -112,7 +112,7 @@ class SimulationGrasp(Node):
         closed = max(self.fingers.values()) <= 0.006
         opened = max(self.fingers.values()) >= 0.016
         if self.attached and opened:
-            self.get_logger().info(f'Released {self.attached} to Gazebo physics.')
+            self.get_logger().info(f'Released {self.attached} at the commanded placement pose.')
             self.attached, self.offset = None, None
             return
         if not self.attached and closed:

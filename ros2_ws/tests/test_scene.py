@@ -58,12 +58,15 @@ def test_moveit_and_gazebo_collision_geometry_match():
         if not item['static']:
             assert float(model.findtext('link/inertial/mass'))>0
             assert all(float(model.findtext('link/inertial/inertia/'+k))>0 for k in ['ixx','iyy','izz'])
+            assert model.findtext('link/gravity') == 'false'
     assert WORLD.find("plugin[@filename='libgazebo_ros_state.so']") is not None
 
 def test_separate_opencv_conveyor_world_and_launch():
     models={m.attrib['name']:m for m in CONVEYOR.findall('model')}
     assert {'conveyor','sorting_bins','overhead_camera'} <= set(models)
     assert {'conveyor_cube_red','conveyor_cube_green','conveyor_cube_blue'} <= set(models)
+    assert all(models[f'conveyor_cube_{color}'].findtext('link/gravity') == 'false'
+               for color in ['red','green','blue'])
     camera=models['overhead_camera'].find("link/sensor[@type='camera']")
     assert camera is not None
     assert camera.find("plugin[@filename='libgazebo_ros_camera.so']") is not None
