@@ -11,6 +11,15 @@ Visualization Manager:
     Name: Grid
     Enabled: true
     Cell Size: 0.1
+  - Class: rviz_default_plugins/RobotModel
+    Name: Live Robot
+    Enabled: true
+    Robot Description: robot_description
+    TF Prefix: ''
+    Update Interval: 0
+    Visual Enabled: true
+    Collision Enabled: false
+    Alpha: 1
   - Class: moveit_rviz_plugin/MotionPlanning
     Name: MotionPlanning
     Enabled: true
@@ -21,15 +30,15 @@ Visualization Manager:
       Trajectory Topic: /display_planned_path
       Loop Animation: false
       Show Robot Collision: false
-      Show Robot Visual: true
-      Robot Alpha: 0.35
+      Show Robot Visual: false
+      Robot Alpha: 0.25
     Planning Request:
       Planning Group: arm
       Query Goal State: false
       Query Start State: false
     Scene Robot:
       Show Robot Collision: false
-      Show Robot Visual: true
+      Show Robot Visual: false
       Robot Alpha: 1
     Velocity_Scaling_Factor: 1.0
     Acceleration_Scaling_Factor: 1.0
