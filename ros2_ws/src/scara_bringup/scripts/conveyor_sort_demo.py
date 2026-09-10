@@ -96,6 +96,15 @@ class ConveyorDemo(Node):
             raise RuntimeError(f'Gazebo model state is unavailable for {name}')
         return self.models[name]
 
+    def wait_for_height(self, name, minimum_z, timeout=3.0):
+        deadline = time.monotonic()+timeout
+        while time.monotonic() < deadline:
+            pose = self.wait_for_model(name, timeout=0.2)
+            if pose.position.z >= minimum_z:
+                return pose
+            rclpy.spin_once(self, timeout_sec=0.05)
+        raise RuntimeError(f'{name} did not rise with the gripper')
+
     def feed_until_seen(self, color, name):
         self.detections.pop(color, None)
         for step in range(31):
@@ -122,8 +131,7 @@ class ConveyorDemo(Node):
         self.send(self.arm, ARM, self.joints_for(0.26, 0.11, 0.072), 0.45)
         self.send(self.gripper, FINGERS, [0.0, 0.0], 0.35)
         self.send(self.arm, ARM, self.joints_for(0.26, 0.11, 0.115), 0.50)
-        if self.wait_for_model(name).position.z < initial_z+0.025:
-            raise RuntimeError(f'{name} did not rise with the gripper')
+        self.wait_for_height(name, initial_z+0.025)
         target_x = BIN_X[color]
         self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.115), 0.85)
         self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.076), 0.45)

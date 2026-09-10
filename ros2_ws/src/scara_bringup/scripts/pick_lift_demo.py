@@ -39,6 +39,15 @@ class Demo(Node):
             raise RuntimeError('Gazebo model states are unavailable; this demo requires mode:=gazebo')
         return self.models[name]
 
+    def wait_for_height(self, name, minimum_z, timeout=3.0):
+        deadline = time.monotonic()+timeout
+        while time.monotonic() < deadline:
+            pose = self.wait_for_model(name, timeout=0.2)
+            if pose.position.z >= minimum_z:
+                return pose
+            rclpy.spin_once(self, timeout_sec=0.05)
+        raise RuntimeError(f'{name} did not rise with the closed gripper')
+
     def send(self, client, joints, positions, seconds):
         if not client.wait_for_server(timeout_sec=20):
             raise RuntimeError('trajectory controller action is unavailable')
@@ -81,8 +90,7 @@ class Demo(Node):
         self.send(self.gripper, FINGERS, [0.0, 0.0], 0.6)
         time.sleep(0.4)
         self.send(self.arm, ARM, self.joints_for(x, y, 0.115), 0.9)
-        if self.wait_for_model(gazebo_name).position.z < initial_z + 0.025:
-            raise RuntimeError(f'{gazebo_name} did not rise with the closed gripper')
+        self.wait_for_height(gazebo_name, initial_z+0.025)
         self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.115), 1.2)
         self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.080), 0.7)
         self.send(self.gripper, FINGERS, [0.025, 0.025], 0.5)
