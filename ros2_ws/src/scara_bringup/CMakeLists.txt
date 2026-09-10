@@ -5,29 +5,34 @@ find_package(ament_cmake REQUIRED)
 
 install(DIRECTORY launch config worlds models DESTINATION share/${PROJECT_NAME})
 
-# These Python tools are launched with launch_ros/ros2 run.  GitHub's contents
-# API stores new text files without the executable bit; with colcon
-# --symlink-install that permission is preserved by the symlink target.
-# Mark every installed Python tool executable during CMake configure so both
-# normal installs and symlink installs work reliably.
 set(SCARA_PY_SCRIPTS
-  scripts/move_to_pose.py
-  scripts/check_stack.py
-  scripts/scene_objects.py
-  scripts/gripper_command.py
-  scripts/pick_lift_demo.py
-  scripts/simulation_grasp.py
+  move_to_pose.py
+  check_stack.py
+  scene_objects.py
+  gripper_command.py
+  pick_lift_demo.py
+  simulation_grasp.py
 )
 
+# Copy Python nodes into the build tree, mark the copies executable, and install
+# those copies. This keeps colcon --symlink-install working without modifying
+# executable bits on tracked source files (which previously made git pull fail).
+set(SCARA_PY_BUILD_SCRIPTS "")
 foreach(_script IN LISTS SCARA_PY_SCRIPTS)
-  file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/${_script}"
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/scripts/${_script}"
+    "${CMAKE_CURRENT_BINARY_DIR}/${_script}"
+    COPYONLY
+  )
+  file(CHMOD "${CMAKE_CURRENT_BINARY_DIR}/${_script}"
     PERMISSIONS
       OWNER_READ OWNER_WRITE OWNER_EXECUTE
       GROUP_READ GROUP_EXECUTE
       WORLD_READ WORLD_EXECUTE
   )
+  list(APPEND SCARA_PY_BUILD_SCRIPTS "${CMAKE_CURRENT_BINARY_DIR}/${_script}")
 endforeach()
 
-install(PROGRAMS ${SCARA_PY_SCRIPTS} DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS ${SCARA_PY_BUILD_SCRIPTS} DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
