@@ -25,6 +25,13 @@ def setup(context):
     world_value=LaunchConfiguration('world').perform(context)
     world_path=Path(world_value)
     if not world_path.is_absolute():world_path=bringup/'worlds'/world_path
+    if sim:
+        plugin_path=bringup.parents[1]/'lib/libscara_grasp_world_plugin.so'
+        runtime_world=Path('/tmp')/f'scara_runtime_world_{os.getpid()}.world'
+        runtime_world.write_text(world_path.read_text().replace(
+            'filename="libscara_grasp_world_plugin.so"',
+            f'filename="{plugin_path}"'))
+        world_path=runtime_world
     controllers=str(bringup/'config/controllers.yaml')
     urdf=xacro.process_file(str(desc/'urdf/scara.urdf.xacro'),mappings={
         'mode':mode,'description_share':str(desc),'controllers_file':controllers}).toxml()
