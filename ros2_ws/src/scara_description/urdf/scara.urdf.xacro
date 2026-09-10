@@ -60,7 +60,6 @@
 <link name="tcp_link"/>
 <joint name="tcp_fixed" type="fixed"><parent link="tool_link"/><child link="tcp_link"/><origin xyz="0 0 -0.11506141396054323"/></joint>
 <link name="gripper_base_link">
-  <!-- Static pieces from the original SCARA gripper CAD: cover, rails and J3 connector. -->
   <visual><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_061.stl"/></geometry><material name="gripper_cad_white"><color rgba="1 1 1 1"/></material></visual>
   <visual><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_063.stl"/></geometry><material name="gripper_cad_white_2"><color rgba="1 1 1 1"/></material></visual>
   <visual><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_066.stl"/></geometry><material name="gripper_cad_white_3"><color rgba="1 1 1 1"/></material></visual>
@@ -74,8 +73,6 @@
 <joint name="gripper_base_fixed" type="fixed"><parent link="tool_link"/><child link="gripper_base_link"/><origin xyz="0 0 0"/></joint>
 
 <link name="left_finger_link">
-  <!-- Original CAD left jaw assembly.  Meshes are expressed in tool coordinates;
-       the visual/collision offset preserves the source CAD OPEN pose at q=0.025 m. -->
   <visual><origin xyz="0.032307 0.034136 0"/><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_062.stl"/></geometry><material name="left_cad_white"><color rgba="1 1 1 1"/></material></visual>
   <visual><origin xyz="0.032307 0.034136 0"/><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_064.stl"/></geometry><material name="left_cad_white_2"><color rgba="1 1 1 1"/></material></visual>
   <visual><origin xyz="0.032307 0.034136 0"/><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_067.stl"/></geometry><material name="left_cad_white_3"><color rgba="1 1 1 1"/></material></visual>
@@ -88,7 +85,6 @@
 </link>
 
 <link name="right_finger_link">
-  <!-- Original CAD right jaw assembly. -->
   <visual><origin xyz="-0.032307 -0.034136 0"/><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_065.stl"/></geometry><material name="right_cad_white"><color rgba="1 1 1 1"/></material></visual>
   <visual><origin xyz="-0.032307 -0.034136 0"/><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_068.stl"/></geometry><material name="right_cad_white_2"><color rgba="1 1 1 1"/></material></visual>
   <visual><origin xyz="-0.032307 -0.034136 0"/><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_070.stl"/></geometry><material name="right_cad_white_3"><color rgba="1 1 1 1"/></material></visual>
@@ -100,8 +96,6 @@
   <inertial><mass value="0.060"/><inertia ixx="0.000020" ixy="0" ixz="0" iyy="0.000020" iyz="0" izz="0.000006"/></inertial>
 </link>
 
-<!-- Parallel-jaw motion follows the actual slider axis measured from the source CAD.
-     q=0.025 m = source/open pose; q=0 = jaws translated 25 mm inward each. -->
 <joint name="left_finger_joint" type="prismatic">
   <parent link="gripper_base_link"/><child link="left_finger_link"/>
   <origin xyz="-0.015122 -0.015979 0"/>
