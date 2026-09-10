@@ -9,8 +9,16 @@ from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy, qos_profi
 from ament_index_python.packages import get_package_share_directory
 from gazebo_msgs.msg import ModelStates
 from geometry_msgs.msg import Pose
-from moveit_msgs.msg import PlanningScene, CollisionObject
+from moveit_msgs.msg import PlanningScene, CollisionObject, AllowedCollisionEntry
 from shape_msgs.msg import SolidPrimitive
+
+GRASPABLE_OBJECTS = {
+    'pickup_cube', 'pickup_sphere', 'pickup_cylinder', 'pickup_hex_prism',
+    'hanoi_ring_large', 'hanoi_ring_medium', 'hanoi_ring_small',
+}
+GRIPPER_CONTACT_LINKS = {
+    'left_finger_link', 'right_finger_link',
+}
 
 
 def multiply(a,b):
@@ -34,6 +42,25 @@ def compose(a,b):
     p=Pose();p.position.x=a.position.x+v[0];p.position.y=a.position.y+v[1];p.position.z=a.position.z+v[2]
     q=multiply(qa,qb);p.orientation.x=q[0];p.orientation.y=q[1];p.orientation.z=q[2];p.orientation.w=q[3]
     return p
+
+
+def add_gripper_object_allowed_collisions(scene):
+    """Allow the gripper fingers to touch graspable props without invalidating arm plans."""
+    names = sorted(GRIPPER_CONTACT_LINKS | GRASPABLE_OBJECTS)
+    scene.allowed_collision_matrix.entry_names = names
+    rows = []
+    for row_name in names:
+        row = AllowedCollisionEntry()
+        row.enabled = []
+        for col_name in names:
+            allow = (
+                row_name in GRIPPER_CONTACT_LINKS and col_name in GRASPABLE_OBJECTS
+            ) or (
+                col_name in GRIPPER_CONTACT_LINKS and row_name in GRASPABLE_OBJECTS
+            )
+            row.enabled.append(bool(allow))
+        rows.append(row)
+    scene.allowed_collision_matrix.entry_values = rows
 
 
 class SceneObjects(Node):
@@ -61,7 +88,9 @@ class SceneObjects(Node):
                 else:primitive.type=SolidPrimitive.CYLINDER;primitive.dimensions=[float(shape['length']),float(shape['radius'])]
                 obj.primitives.append(primitive);obj.primitive_poses.append(compose(world_pose,from_xyz_rpy(shape['pose'])))
             scene.world.collision_objects.append(obj)
-        if scene.world.collision_objects:self.publisher.publish(scene)
+        add_gripper_object_allowed_collisions(scene)
+        if scene.world.collision_objects:
+            self.publisher.publish(scene)
 
 
 def main():
