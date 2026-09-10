@@ -7,8 +7,8 @@ from rclpy.action import ActionClient
 from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectoryPoint
 
-JOINTS = ['left_finger_joint']
-POSITIONS = {'open': [0.025], 'close': [0.0]}
+JOINTS = ['left_finger_joint', 'right_finger_joint']
+POSITIONS = {'open': [0.025, 0.025], 'close': [0.0, 0.0]}
 
 
 def main():
