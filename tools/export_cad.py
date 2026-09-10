@@ -42,10 +42,10 @@ groups={
  'shoulder_link':[6,*range(10,28),78,79,80,*range(97,101),*range(105,109)],
  'arm1_link':[28,29,30,31,33,34,36,37,38,39,40,41,42,43,44,47,57,77,85,86,91,92],
  'arm2_link':[32,35,45,46,48,50,51,52,54,56,87,*range(93,97),*range(101,105)],
- 'tool_link':[49,53,*range(58,77)],
+ 'tool_link':[49,53,58,59,60],
 }
 assigned=[i for ids in groups.values() for i in ids]
-assert len(assigned)==len(set(assigned)) and set(assigned)==set(range(109))
+assert len(assigned)==len(set(assigned)) and set(assigned)==(set(range(109))-set(range(61,77)))
 def center(i): return np.array(parts[i][1].BoundingBox().center.toTuple())
 p1=np.array([42.5,0.,31.]);p2=center(32);p3=center(49)
 p2[2]=parts[32][1].BoundingBox().zmin
@@ -63,11 +63,11 @@ manifest={'source':'cad/step/SCARA Robot 3D Model.STEP','source_sha256':hashlib.
  'geometry':{'l1':L1/1000,'l2':L2/1000,'shoulder_z':.066,'slide_z':(zslide-31)/1000,
  'elbow_z':(p2[2]-zslide)/1000,'wrist_z':(p3[2]-p2[2])/1000,
  'tcp_z':(min(parts[i][1].BoundingBox().zmin for i in groups['tool_link'])-p3[2])/1000},
- 'excluded':[{'index':i,'name':parts[i][0],'reason':'Loose laser accessory beside base, not attached to manipulator'} for i in [109,110]],'links':{}}
+ 'excluded':[{'index':i,'name':parts[i][0],'reason':'Loose laser accessory beside base, not attached to manipulator'} for i in [109,110]] + [{'index':i,'name':parts[i][0],'reason':'Original static gripper geometry omitted from robot visual; functional two-finger URDF gripper is used instead'} for i in range(61,77)],'links':{}}
 (OUT/'meshes').mkdir(parents=True,exist_ok=True);(OUT/'config').mkdir(exist_ok=True)
 # Collision hulls per component preserve the gaps between rods and the arm profile.
 # Small fasteners, belts, and bearings need no additional collision hulls.
-collision_ids={0,1,10,11,12,13,14,15,20,27,28,29,32,38,45,46,48,49,58,59,61,62,63,64,65,66,67,68,69,70,71,76,77,79,80,81,82}
+collision_ids={0,1,10,11,12,13,14,15,20,27,28,29,32,38,45,46,48,49,58,59,77,79,80,81,82}
 for link,ids in groups.items():
     origin,yaw=frames[link];origin=np.asarray(origin)
     c,s=math.cos(yaw),math.sin(yaw);R=np.array([[c,s,0],[-s,c,0],[0,0,1]])
