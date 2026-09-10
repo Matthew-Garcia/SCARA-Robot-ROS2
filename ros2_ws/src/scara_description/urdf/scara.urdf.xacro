@@ -49,18 +49,6 @@
 <collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_049.stl"/></geometry></collision>
 <collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_058.stl"/></geometry></collision>
 <collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_059.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_061.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_062.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_063.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_064.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_065.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_066.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_067.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_068.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_069.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_070.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_071.stl"/></geometry></collision>
-<collision><geometry><mesh filename="file://$(arg description_share)/meshes/tool_link_collision_076.stl"/></geometry></collision>
 <inertial><origin xyz="2.949029909160572e-15 -5.304784389537076e-15 -0.03533070698027093"/><mass value="0.35"/><inertia ixx="0.0010352714832298565" ixy="0" ixz="0" iyy="0.0010119555516648687" iyz="0" izz="0.0005639303865941157"/></inertial>
 </link>
 <joint name="shoulder_joint" type="revolute"><parent link="base_link"/><child link="shoulder_link"/><origin xyz="0 0 0.066"/><axis xyz="0 0 1"/><limit lower="-1.5707963267948966" upper="4.642575810304916" effort="20" velocity="2.4"/><dynamics damping="0.1" friction="0.01"/></joint>
