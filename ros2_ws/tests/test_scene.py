@@ -56,6 +56,7 @@ def test_moveit_and_gazebo_collision_geometry_match():
                 assert float(geom.findtext('radius'))==pytest.approx(shape['radius'])
                 if shape['type']=='cylinder':assert float(geom.findtext('length'))==pytest.approx(shape['length'])
         if not item['static']:
+            assert model.findtext('link/kinematic') == 'true'
             assert float(model.findtext('link/inertial/mass'))>0
             assert all(float(model.findtext('link/inertial/inertia/'+k))>0 for k in ['ixx','iyy','izz'])
     assert WORLD.find("plugin[@filename='libgazebo_ros_state.so']") is not None
@@ -64,6 +65,8 @@ def test_separate_opencv_conveyor_world_and_launch():
     models={m.attrib['name']:m for m in CONVEYOR.findall('model')}
     assert {'conveyor','sorting_bins','overhead_camera'} <= set(models)
     assert {'conveyor_cube_red','conveyor_cube_green','conveyor_cube_blue'} <= set(models)
+    assert all(models[name].findtext('link/kinematic') == 'true'
+               for name in ['conveyor_cube_red','conveyor_cube_green','conveyor_cube_blue'])
     camera=models['overhead_camera'].find("link/sensor[@type='camera']")
     assert camera is not None
     assert camera.find("plugin[@filename='libgazebo_ros_camera.so']") is not None
@@ -78,10 +81,9 @@ def test_separate_opencv_conveyor_world_and_launch():
 def test_simulation_grasp_coupling_is_launched_and_installed():
     launch=(B/'launch/sim.launch.py').read_text()
     cmake=(B/'CMakeLists.txt').read_text()
-    source=(B/'src/scara_grasp_world_plugin.cpp').read_text()
-    assert 'GAZEBO_PLUGIN_PATH' in launch
-    assert "'-s',str(plugin_path)" in launch
+    source=(B/'scripts/simulation_grasp.py').read_text()
+    assert "executable='simulation_grasp.py'" in launch
     assert "'-s','libgazebo_ros_factory.so'" in launch
-    assert 'scara_grasp_world_plugin' in cmake
-    assert 'GZ_REGISTER_SYSTEM_PLUGIN' in source
-    assert 'ConnectWorldCreated' in source
+    assert 'simulation_grasp.py' in cmake
+    assert '/gazebo/set_model_state' in source
+    assert 'left_finger_joint' in source and 'right_finger_joint' in source

@@ -92,7 +92,7 @@ class Demo(Node):
         self.send(self.arm, ARM, self.joints_for(x, y, 0.115), 0.9)
         self.wait_for_height(gazebo_name, initial_z+0.025)
         self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.115), 1.2)
-        self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.080), 0.7)
+        self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.062), 0.7)
         self.send(self.gripper, FINGERS, [0.025, 0.025], 0.5)
         self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.115), 0.7)
         if object_name == 'cube':

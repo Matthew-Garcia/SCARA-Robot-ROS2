@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(scara_bringup)
 find_package(ament_cmake REQUIRED)
-find_package(gazebo REQUIRED)
-add_library(scara_grasp_world_plugin SHARED src/scara_grasp_world_plugin.cpp)
-target_include_directories(scara_grasp_world_plugin PRIVATE ${GAZEBO_INCLUDE_DIRS})
-target_link_libraries(scara_grasp_world_plugin ${GAZEBO_LIBRARIES})
-target_compile_features(scara_grasp_world_plugin PRIVATE cxx_std_17)
-install(TARGETS scara_grasp_world_plugin LIBRARY DESTINATION lib)
 install(DIRECTORY launch config worlds models DESTINATION share/${PROJECT_NAME})
 
 set(SCARA_PY_SCRIPTS
@@ -17,6 +11,7 @@ set(SCARA_PY_SCRIPTS
   pick_lift_demo.py
   conveyor_vision.py
   conveyor_sort_demo.py
+  simulation_grasp.py
 )
 set(SCARA_PY_BUILD_SCRIPTS "")
 foreach(_script IN LISTS SCARA_PY_SCRIPTS)

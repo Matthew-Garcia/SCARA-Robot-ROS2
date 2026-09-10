@@ -25,7 +25,6 @@ def setup(context):
     world_value=LaunchConfiguration('world').perform(context)
     world_path=Path(world_value)
     if not world_path.is_absolute():world_path=bringup/'worlds'/world_path
-    plugin_path=bringup.parents[1]/'lib/libscara_grasp_world_plugin.so'
     controllers=str(bringup/'config/controllers.yaml')
     urdf=xacro.process_file(str(desc/'urdf/scara.urdf.xacro'),mappings={
         'mode':mode,'description_share':str(desc),'controllers_file':controllers}).toxml()
@@ -54,17 +53,18 @@ def setup(context):
             return next_actions
         return callback
     actions=[SetEnvironmentVariable('GAZEBO_MODEL_PATH',os.pathsep.join(filter(None,[str(bringup/'models'),os.environ.get('GAZEBO_MODEL_PATH','')]))),
-             SetEnvironmentVariable('GAZEBO_PLUGIN_PATH',os.pathsep.join(filter(None,[str(bringup.parents[1]/'lib'),os.environ.get('GAZEBO_PLUGIN_PATH','')]))),
              RegisterEventHandler(OnProcessExit(target_action=broadcaster,on_exit=after_success([controller]))),
              RegisterEventHandler(OnProcessExit(target_action=controller,on_exit=after_success([gripper]))),
              RegisterEventHandler(OnProcessExit(target_action=gripper,on_exit=after_success(ready))),publisher]
     if sim:
         gazebo=ExecuteProcess(cmd=['gzserver',str(world_path),
             '-s','libgazebo_ros_init.so','-s','libgazebo_ros_factory.so',
-            '-s','libgazebo_ros_force_system.so','-s',str(plugin_path)],output='screen')
+            '-s','libgazebo_ros_force_system.so'],output='screen')
         client=ExecuteProcess(cmd=['gzclient'],output='screen',condition=IfCondition(gui))
+        grasp=Node(package='scara_bringup',executable='simulation_grasp.py',
+                   parameters=[{'use_sim_time':True}],output='screen')
         spawn=Node(package='gazebo_ros',executable='spawn_entity.py',arguments=['-entity','scara','-topic','robot_description','-timeout','120'],output='screen')
-        actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,client,spawn]
+        actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,client,grasp,spawn]
     else:
         actions += [Node(package='controller_manager',executable='ros2_control_node',parameters=[robot,controllers,{'use_sim_time':False}],output='screen'),broadcaster]
     return actions

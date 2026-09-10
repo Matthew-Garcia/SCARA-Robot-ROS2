@@ -134,7 +134,7 @@ class ConveyorDemo(Node):
         self.wait_for_height(name, initial_z+0.025)
         target_x = BIN_X[color]
         self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.115), 0.85)
-        self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.076), 0.45)
+        self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.062), 0.45)
         self.send(self.gripper, FINGERS, [0.025, 0.025], 0.30)
         self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.115), 0.45)
         deadline = time.monotonic()+1.5

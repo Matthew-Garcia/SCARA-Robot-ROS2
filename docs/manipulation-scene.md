@@ -32,7 +32,7 @@ ros2 run scara_bringup gripper_command.py close
 ros2 run scara_bringup pick_lift_demo.py --object cube
 ```
 
-The two fingers are independently represented but commanded together. A Gazebo system plugin connects to the active world, creates a temporary fixed joint when the fingers close around an approved object, and releases that joint when they open. The demonstration supports `cube`, `sphere`, `cylinder`, and `hex`. An autonomous Hanoi solver is not included.
+The two fingers are independently represented but commanded together. In Gazebo, a ROS coupling node tracks the measured finger midpoint and carries the nearest approved kinematic prop while the fingers are closed; opening releases it at the commanded placement pose. This makes the visual demonstration deterministic while leaving real-hardware grasp sensing as future work. The demonstration supports `cube`, `sphere`, `cylinder`, and `hex`. An autonomous Hanoi solver is not included.
 
 The placement fixture is in `cad/development/` as both OpenSCAD and STL. It measures 240 × 70 × 10 mm and has four shallow locating pockets. The red-cube station is a 38 mm square pocket; the Gazebo version includes raised retaining walls and the automatic cube demo verifies the final cube position.
 
