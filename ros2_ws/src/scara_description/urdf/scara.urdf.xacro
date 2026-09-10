@@ -3,7 +3,6 @@
 <xacro:arg name="mode" default="mock"/>
 <xacro:arg name="description_share" default="$(find scara_description)"/>
 <xacro:arg name="controllers_file" default="$(find scara_bringup)/config/controllers.yaml"/>
-<xacro:arg name="grasp_plugin" default="libscara_grasp_plugin.so"/>
 <xacro:property name="mode" value="$(arg mode)"/>
 <link name="world"/>
 <joint name="world_fixed" type="fixed"><parent link="world"/><child link="base_link"/></joint>
@@ -102,7 +101,6 @@
 <xacro:if value="${mode == 'gazebo'}">
 <gazebo>
 <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so"><robot_param>robot_description</robot_param><robot_param_node>robot_state_publisher</robot_param_node><parameters>$(arg controllers_file)</parameters></plugin>
-<plugin name="scara_grasp" filename="$(arg grasp_plugin)"><gripper_link>gripper_base_link</gripper_link><left_joint>left_finger_joint</left_joint><right_joint>right_finger_joint</right_joint><attach_distance>0.085</attach_distance><closed_threshold>0.006</closed_threshold><open_threshold>0.016</open_threshold><targets>pickup_cube pickup_sphere pickup_cylinder pickup_hex_prism hanoi_ring_large hanoi_ring_medium hanoi_ring_small conveyor_cube_red conveyor_cube_green conveyor_cube_blue</targets></plugin>
 </gazebo>
 <gazebo reference="base_link"><selfCollide>false</selfCollide><material>Gazebo/Blue</material></gazebo>
 <gazebo reference="shoulder_link"><selfCollide>false</selfCollide><material>Gazebo/Grey</material></gazebo>

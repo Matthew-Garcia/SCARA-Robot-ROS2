@@ -73,3 +73,12 @@ def test_separate_opencv_conveyor_world_and_launch():
     assert 'cv2.cvtColor' in vision and all(color in vision for color in ['red','green','blue'])
     sorter=(B/'scripts/conveyor_sort_demo.py').read_text()
     assert '/conveyor/vision/detection' in sorter and "default=0" in sorter
+
+def test_simulation_grasp_coupling_is_launched_and_installed():
+    launch=(B/'launch/sim.launch.py').read_text()
+    cmake=(B/'CMakeLists.txt').read_text()
+    helper=(B/'scripts/simulation_grasp.py').read_text()
+    assert "executable='simulation_grasp.py'" in launch
+    assert 'simulation_grasp.py' in cmake
+    assert "'/gazebo/set_entity_state'" in helper
+    assert 'conveyor_cube_red' in helper

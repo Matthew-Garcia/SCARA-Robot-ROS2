@@ -27,8 +27,7 @@ def setup(context):
     if not world_path.is_absolute():world_path=bringup/'worlds'/world_path
     controllers=str(bringup/'config/controllers.yaml')
     urdf=xacro.process_file(str(desc/'urdf/scara.urdf.xacro'),mappings={
-        'mode':mode,'description_share':str(desc),'controllers_file':controllers,
-        'grasp_plugin':str(bringup.parents[1]/'lib/libscara_grasp_plugin.so')}).toxml()
+        'mode':mode,'description_share':str(desc),'controllers_file':controllers}).toxml()
     def config(name):
         with (moveit/'config'/name).open() as stream:return yaml.safe_load(stream)
     robot={'robot_description':urdf}
@@ -46,6 +45,9 @@ def setup(context):
     gripper=Node(package='controller_manager',executable='spawner',arguments=['gripper_controller','--controller-manager-timeout','120'],output='screen')
     move_group=Node(package='moveit_ros_move_group',executable='move_group',parameters=params,output='screen')
     ready=[move_group,Node(package='scara_bringup',executable='scene_objects.py',parameters=[{'use_sim_time':sim,'dynamic_scene':sim}],output='screen')]
+    if sim:
+        ready.append(Node(package='scara_bringup',executable='simulation_grasp.py',
+                          parameters=[{'use_sim_time':True}],output='screen'))
     if rviz:ready.append(Node(package='rviz2',executable='rviz2',arguments=['-d',str(moveit/'config/scara.rviz')],parameters=params,output='screen'))
     def after_success(next_actions):
         def callback(event,context):
