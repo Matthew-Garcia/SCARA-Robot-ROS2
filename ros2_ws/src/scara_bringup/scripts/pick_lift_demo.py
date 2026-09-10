@@ -11,7 +11,7 @@ from gazebo_msgs.msg import ModelStates
 from trajectory_msgs.msg import JointTrajectoryPoint
 
 ARM = ['shoulder_joint', 'z_joint', 'elbow_joint', 'wrist_joint']
-FINGERS = ['left_finger_joint', 'right_finger_joint']
+FINGERS = ['left_finger_joint']
 OBJECTS = {
     'cube': (0.255, 0.105, 0.060, 0.180),
     'sphere': (0.310, 0.120, 0.061, 0.240),
@@ -72,17 +72,17 @@ class Demo(Node):
         if gazebo_name not in self.model_z:
             raise RuntimeError('Gazebo model states are unavailable; this demo requires mode:=gazebo')
         initial_z = self.model_z[gazebo_name]
-        self.send(self.gripper, FINGERS, [0.025, 0.025], 0.5)
+        self.send(self.gripper, FINGERS, [0.025], 0.5)
         self.send(self.arm, ARM, self.joints_for(x, y, 0.115), 1.4)
         self.send(self.arm, ARM, self.joints_for(x, y, object_z), 0.9)
-        self.send(self.gripper, FINGERS, [0.0, 0.0], 0.6)
+        self.send(self.gripper, FINGERS, [0.0], 0.6)
         time.sleep(0.4)
         self.send(self.arm, ARM, self.joints_for(x, y, 0.115), 0.9)
         if self.model_z.get(gazebo_name, initial_z) < initial_z + 0.025:
             raise RuntimeError(f'{gazebo_name} did not rise with the closed gripper')
         self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.115), 1.2)
         self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.080), 0.7)
-        self.send(self.gripper, FINGERS, [0.025, 0.025], 0.5)
+        self.send(self.gripper, FINGERS, [0.025], 0.5)
         self.send(self.arm, ARM, self.joints_for(tray_x, -0.035, 0.115), 0.7)
 
 
