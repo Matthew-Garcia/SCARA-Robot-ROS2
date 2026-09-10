@@ -58,6 +58,33 @@ ros2 run scara_bringup pick_lift_demo.py --object cube
 
 The grasp plugin creates a temporary fixed physics joint only when the fingers close near an approved pickup object and removes it when the fingers open. It does not teleport objects. Relaunch the world to reset all object positions.
 
+For the red cube, the sequence also verifies that the released cube settles inside the square locating pocket rather than merely being dropped near the fixture.
+
+### Separate OpenCV conveyor sorting world
+
+Launch the continuous vision demo:
+
+```bash
+ros2 launch scara_bringup conveyor_demo.launch.py
+```
+
+This starts a separate bright Gazebo world with a wood board, conveyor, overhead RGB camera, three colored cubes, and red/green/blue receiving bins. `conveyor_vision.py` uses OpenCV HSV segmentation on `/conveyor/camera/image_raw`; `conveyor_sort_demo.py` advances a cube to the pickup point, requires a matching vision detection, picks it, places it in the matching bin, and repeats until `Ctrl+C`.
+
+Useful launch options:
+
+```bash
+ros2 launch scara_bringup conveyor_demo.launch.py cycles:=3
+ros2 launch scara_bringup conveyor_demo.launch.py autorun:=false
+```
+
+With `autorun:=false`, start a bounded run manually from a second sourced terminal:
+
+```bash
+ros2 run scara_bringup conveyor_sort_demo.py --cycles 3
+```
+
+The annotated OpenCV image is published on `/conveyor/vision/debug`, and detections are published on `/conveyor/vision/detection`.
+
 ### RViz + MoveIt without Gazebo
 
 ```bash
@@ -90,10 +117,10 @@ The controlled joint order is:
 
 | Joint | Motion | Software position range |
 | --- | --- | --- |
-| `shoulder_joint` | rotation of tower and arm | −90° to 266°; 1.2 rad/s |
-| `z_joint` | carriage translation along tower | −0.05 to +0.05 m; 0.08 m/s |
-| `elbow_joint` | forearm rotation | −150° to 150°; 1.5 rad/s |
-| `wrist_joint` | gripper yaw | −162° to 162°; 2.0 rad/s |
+| `shoulder_joint` | rotation of tower and arm | −90° to 266°; 2.4 rad/s |
+| `z_joint` | carriage translation along tower | −0.05 to +0.05 m; 0.16 m/s |
+| `elbow_joint` | forearm rotation | −150° to 150°; 3.0 rad/s |
+| `wrist_joint` | gripper yaw | −162° to 162°; 4.0 rad/s |
 
 These ranges come from the original Processing GUI; they are not independently measured mechanical limits. Zero slide position is the exported CAD carriage height. The software frame convention must be calibrated against physical motor zeros before hardware use.
 

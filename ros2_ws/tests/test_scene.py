@@ -7,6 +7,7 @@ import pytest
 B=Path(__file__).resolve().parents[1]/'src/scara_bringup'
 CONFIG=yaml.safe_load((B/'config/scene_objects.yaml').read_text())
 WORLD=ET.parse(B/'worlds/scara.world').getroot().find('world')
+CONVEYOR=ET.parse(B/'worlds/conveyor_sorting.world').getroot().find('world')
 
 def numbers(text):return [float(v) for v in text.split()]
 
@@ -33,7 +34,8 @@ def test_colored_pickup_set_and_printable_tray():
         assert len(by_name[name]['color'])==4
         assert by_name[name]['color'][3]==1
     tray=by_name['placement_tray']
-    assert tray['static'] and tray['shapes'][0]['size']==[.24,.070,.010]
+    assert tray['static'] and tray['shapes'][0]['size']==[.24,.070,.004]
+    assert len(tray['shapes'])==5
     cad=B.parents[2]/'cad/development'
     assert (cad/'pickup_placement_tray.scad').is_file()
     assert (cad/'pickup_placement_tray.stl').stat().st_size>84
@@ -57,3 +59,17 @@ def test_moveit_and_gazebo_collision_geometry_match():
             assert float(model.findtext('link/inertial/mass'))>0
             assert all(float(model.findtext('link/inertial/inertia/'+k))>0 for k in ['ixx','iyy','izz'])
     assert WORLD.find("plugin[@filename='libgazebo_ros_state.so']") is not None
+
+def test_separate_opencv_conveyor_world_and_launch():
+    models={m.attrib['name']:m for m in CONVEYOR.findall('model')}
+    assert {'conveyor','sorting_bins','overhead_camera'} <= set(models)
+    assert {'conveyor_cube_red','conveyor_cube_green','conveyor_cube_blue'} <= set(models)
+    camera=models['overhead_camera'].find("link/sensor[@type='camera']")
+    assert camera is not None
+    assert camera.find("plugin[@filename='libgazebo_ros_camera.so']") is not None
+    assert CONVEYOR.find("plugin[@filename='libgazebo_ros_state.so']") is not None
+    assert (B/'launch/conveyor_demo.launch.py').is_file()
+    vision=(B/'scripts/conveyor_vision.py').read_text()
+    assert 'cv2.cvtColor' in vision and all(color in vision for color in ['red','green','blue'])
+    sorter=(B/'scripts/conveyor_sort_demo.py').read_text()
+    assert '/conveyor/vision/detection' in sorter and "default=0" in sorter

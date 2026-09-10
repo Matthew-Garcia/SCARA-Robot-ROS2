@@ -2,9 +2,9 @@
 
 ## Passed in the development environment
 
-- Six Python tests: source CAD hash and 109-part membership; expanded mock/Gazebo URDF and mesh/controller consistency; reconstruction of the original STEP assembly frames to 1e-9 tolerance.
+- Python tests: source CAD hash and 109-part membership; expanded mock/Gazebo URDF and mesh/controller consistency; reconstruction of the original STEP assembly frames to 1e-9 tolerance; square-pocket fixture geometry; and separate conveyor/camera/OpenCV assets.
 - Standalone C++17 analytical solver: 10,000 seeded FK/IK round trips, both elbow branches, wrapped shoulder angles, full extension, unreachable inner/outer positions, slide limits and non-finite input.
-- Scene checks: exactly three movable Hanoi rings plus cube and sphere; positive object inertias; open ring holes; matching Gazebo/MoveIt collision shapes and starting poses.
+- Scene checks: exactly three movable Hanoi rings plus four colored pickup solids; positive object inertias; open ring holes; matching Gazebo/MoveIt collision shapes and starting poses.
 - Python syntax compilation for the launch and ROS client/check scripts.
 - Visual inspection of the CAD-derived preview.
 - All 77 original files preserve their byte contents after relocation from source commit `0050e850bd5414da97d7ea8488d65917e560edf8`.

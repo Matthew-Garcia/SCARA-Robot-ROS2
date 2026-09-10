@@ -45,6 +45,11 @@ def test_control_and_mesh_paths():
     config=yaml.safe_load((WS/'src/scara_bringup/config/controllers.yaml').read_text())
     assert config['arm_controller']['ros__parameters']['joints']==arm
     assert config['gripper_controller']['ros__parameters']['joints']==fingers
+    limits=yaml.safe_load((WS/'src/scara_moveit_config/config/joint_limits.yaml').read_text())
+    gazebo=urdf('gazebo')
+    by_name={j.attrib['name']:j for j in gazebo.findall('joint')}
+    for name,data in limits['joint_limits'].items():
+        assert float(by_name[name].find('limit').attrib['velocity'])==data['max_velocity']
 
 def transform(xyz,yaw=0):
     c,s=math.cos(yaw),math.sin(yaw);T=np.eye(4);T[:3,:3]=[[c,-s,0],[s,c,0],[0,0,1]];T[:3,3]=xyz;return T

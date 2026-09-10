@@ -1534,11 +1534,20 @@
     </model>
     <model name="placement_tray">
       <static>true</static>
-      <pose>0.27 -0.035 0.049 0 0 0</pose>
+      <pose>0.27 -0.035 0.047 0 0 0</pose>
       <link name="body">
-        <collision name="base_collision"><pose>0 0 0 0 0 0</pose><geometry><box><size>0.24 0.070 0.010</size></box></geometry></collision>
-        <visual name="base_visual"><geometry><box><size>0.24 0.070 0.010</size></box></geometry><material><ambient>0.02 0.25 0.85 1</ambient><diffuse>0.02 0.35 1 1</diffuse></material></visual>
-        <visual name="station_1"><pose>-0.090 0 0.0052 0 0 0</pose><geometry><cylinder><radius>0.021</radius><length>0.001</length></cylinder></geometry><material><ambient>0.01 0.10 0.42 1</ambient><diffuse>0.01 0.10 0.42 1</diffuse></material></visual>
+        <collision name="base_collision"><pose>0 0 0 0 0 0</pose><geometry><box><size>0.24 0.070 0.004</size></box></geometry></collision>
+        <visual name="base_visual"><geometry><box><size>0.24 0.070 0.004</size></box></geometry><material><ambient>0.02 0.25 0.85 1</ambient><diffuse>0.02 0.35 1 1</diffuse></material></visual>
+        <!-- A real shallow square locating pocket for the 30 mm red cube. -->
+        <collision name="cube_pocket_north"><pose>-0.090 0.022 0.006 0 0 0</pose><geometry><box><size>0.050 0.006 0.008</size></box></geometry></collision>
+        <collision name="cube_pocket_south"><pose>-0.090 -0.022 0.006 0 0 0</pose><geometry><box><size>0.050 0.006 0.008</size></box></geometry></collision>
+        <collision name="cube_pocket_east"><pose>-0.068 0 0.006 0 0 0</pose><geometry><box><size>0.006 0.038 0.008</size></box></geometry></collision>
+        <collision name="cube_pocket_west"><pose>-0.112 0 0.006 0 0 0</pose><geometry><box><size>0.006 0.038 0.008</size></box></geometry></collision>
+        <visual name="cube_pocket_floor"><pose>-0.090 0 0.0021 0 0 0</pose><geometry><box><size>0.038 0.038 0.001</size></box></geometry><material><ambient>0.01 0.06 0.20 1</ambient><diffuse>0.01 0.08 0.28 1</diffuse></material></visual>
+        <visual name="cube_pocket_north_visual"><pose>-0.090 0.022 0.006 0 0 0</pose><geometry><box><size>0.050 0.006 0.008</size></box></geometry><material><ambient>0.02 0.25 0.85 1</ambient><diffuse>0.02 0.35 1 1</diffuse></material></visual>
+        <visual name="cube_pocket_south_visual"><pose>-0.090 -0.022 0.006 0 0 0</pose><geometry><box><size>0.050 0.006 0.008</size></box></geometry><material><ambient>0.02 0.25 0.85 1</ambient><diffuse>0.02 0.35 1 1</diffuse></material></visual>
+        <visual name="cube_pocket_east_visual"><pose>-0.068 0 0.006 0 0 0</pose><geometry><box><size>0.006 0.038 0.008</size></box></geometry><material><ambient>0.02 0.25 0.85 1</ambient><diffuse>0.02 0.35 1 1</diffuse></material></visual>
+        <visual name="cube_pocket_west_visual"><pose>-0.112 0 0.006 0 0 0</pose><geometry><box><size>0.006 0.038 0.008</size></box></geometry><material><ambient>0.02 0.25 0.85 1</ambient><diffuse>0.02 0.35 1 1</diffuse></material></visual>
         <visual name="station_2"><pose>-0.030 0 0.0052 0 0 0</pose><geometry><cylinder><radius>0.021</radius><length>0.001</length></cylinder></geometry><material><ambient>0.01 0.10 0.42 1</ambient><diffuse>0.01 0.10 0.42 1</diffuse></material></visual>
         <visual name="station_3"><pose>0.030 0 0.0052 0 0 0</pose><geometry><cylinder><radius>0.021</radius><length>0.001</length></cylinder></geometry><material><ambient>0.01 0.10 0.42 1</ambient><diffuse>0.01 0.10 0.42 1</diffuse></material></visual>
         <visual name="station_4"><pose>0.090 0 0.0052 0 0 0</pose><geometry><cylinder><radius>0.021</radius><length>0.001</length></cylinder></geometry><material><ambient>0.01 0.10 0.42 1</ambient><diffuse>0.01 0.10 0.42 1</diffuse></material></visual>

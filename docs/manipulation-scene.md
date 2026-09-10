@@ -34,7 +34,17 @@ ros2 run scara_bringup pick_lift_demo.py --object cube
 
 The two fingers are independently represented but commanded together. In Gazebo, closing near an approved object attaches it with a temporary fixed physics joint; opening releases it. The demonstration supports `cube`, `sphere`, `cylinder`, and `hex`. An autonomous Hanoi solver is not included.
 
-The placement fixture is in `cad/development/` as both OpenSCAD and STL. It measures 240 × 70 × 10 mm and has four shallow locating pockets.
+The placement fixture is in `cad/development/` as both OpenSCAD and STL. It measures 240 × 70 × 10 mm and has four shallow locating pockets. The red-cube station is a 38 mm square pocket; the Gazebo version includes raised retaining walls and the automatic cube demo verifies the final cube position.
+
+## Separate computer-vision conveyor demo
+
+```bash
+ros2 launch scara_bringup conveyor_demo.launch.py
+```
+
+`conveyor_sorting.world` is independent of the general manipulation scene. It contains an overhead RGB camera, a dark conveyor, three 25 mm colored cubes, and matching red, green, and blue receiving bins. OpenCV detects the active cube by HSV color and publishes an annotated debug image. The sorter moves each cube along the conveyor, requires a recent matching detection, picks it with the working gripper, places it into the matching bin, and repeats continuously.
+
+Use `cycles:=3` for one red/green/blue sequence or `autorun:=false` to launch the world without automatic motion.
 
 To restore the initial arrangement, stop and relaunch the simulation. `check_stack.py` checks all ten scene models, both controllers, arm planning/execution, and gripper motion.
 

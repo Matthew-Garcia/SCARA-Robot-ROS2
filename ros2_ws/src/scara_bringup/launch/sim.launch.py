@@ -22,6 +22,9 @@ def setup(context):
     desc=Path(get_package_share_directory('scara_description'))
     bringup=Path(get_package_share_directory('scara_bringup'))
     moveit=Path(get_package_share_directory('scara_moveit_config'))
+    world_value=LaunchConfiguration('world').perform(context)
+    world_path=Path(world_value)
+    if not world_path.is_absolute():world_path=bringup/'worlds'/world_path
     controllers=str(bringup/'config/controllers.yaml')
     urdf=xacro.process_file(str(desc/'urdf/scara.urdf.xacro'),mappings={
         'mode':mode,'description_share':str(desc),'controllers_file':controllers,
@@ -56,7 +59,7 @@ def setup(context):
              RegisterEventHandler(OnProcessExit(target_action=gripper,on_exit=after_success(ready))),publisher]
     if sim:
         gazebo=IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('gazebo_ros'))/'launch/gazebo.launch.py')),
-            launch_arguments={'world':str(bringup/'worlds/scara.world'),'gui':gui,'verbose':'false','pause':'false'}.items())
+            launch_arguments={'world':str(world_path),'gui':gui,'verbose':'false','pause':'false'}.items())
         spawn=Node(package='gazebo_ros',executable='spawn_entity.py',arguments=['-entity','scara','-topic','robot_description','-timeout','120'],output='screen')
         actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,spawn]
     else:
@@ -66,4 +69,5 @@ def setup(context):
 
 def generate_launch_description():
     return LaunchDescription([DeclareLaunchArgument('mode',default_value='gazebo',choices=['gazebo','mock']),
-       DeclareLaunchArgument('gui',default_value='true'),DeclareLaunchArgument('rviz',default_value='true'),OpaqueFunction(function=setup)])
+       DeclareLaunchArgument('gui',default_value='true'),DeclareLaunchArgument('rviz',default_value='true'),
+       DeclareLaunchArgument('world',default_value='scara.world'),OpaqueFunction(function=setup)])

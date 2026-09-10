@@ -22,6 +22,9 @@
 <depend>python3-yaml</depend>
 <depend>rclpy</depend>
 <depend>sensor_msgs</depend>
+<depend>std_msgs</depend>
+<depend>cv_bridge</depend>
+<exec_depend>python3-opencv</exec_depend>
 <depend>control_msgs</depend>
 <depend>trajectory_msgs</depend>
 <depend>moveit_msgs</depend>
