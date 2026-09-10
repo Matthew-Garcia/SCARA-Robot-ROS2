@@ -19,10 +19,20 @@ Visualization Manager:
     Planning Scene Topic: /monitored_planning_scene
     Planned Path:
       Trajectory Topic: /display_planned_path
-      Loop Animation: true
+      Loop Animation: false
+      Show Robot Collision: false
+      Show Robot Visual: true
+      Robot Alpha: 0.35
     Planning Request:
       Planning Group: arm
-      Query Goal State: true
+      Query Goal State: false
+      Query Start State: false
+    Scene Robot:
+      Show Robot Collision: false
+      Show Robot Visual: true
+      Robot Alpha: 1
+    Velocity_Scaling_Factor: 1.0
+    Acceleration_Scaling_Factor: 1.0
   - Class: rviz_default_plugins/TF
     Name: TF
     Enabled: false
