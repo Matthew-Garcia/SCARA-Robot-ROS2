@@ -11,7 +11,6 @@ import rclpy
 from gazebo_msgs.msg import LinkStates, ModelState, ModelStates
 from geometry_msgs.msg import Pose
 from rclpy.node import Node
-from sensor_msgs.msg import JointState
 
 
 TARGETS = {
@@ -76,8 +75,9 @@ class SimulationGrasp(Node):
     def __init__(self):
         super().__init__('scara_simulation_grasp')
         self.gripper_pose = None
+        self.left_finger_pose = None
+        self.right_finger_pose = None
         self.models = {}
-        self.fingers = {}
         self.attached_name = None
         self.gripper_to_object = None
         self.publisher = self.create_publisher(
@@ -86,8 +86,6 @@ class SimulationGrasp(Node):
                                  self.links_callback, 10)
         self.create_subscription(ModelStates, '/gazebo/model_states',
                                  self.models_callback, 10)
-        self.create_subscription(JointState, '/joint_states',
-                                 self.joints_callback, 10)
         self.create_timer(0.02, self.update)
         self.get_logger().info('Simulation grasp helper ready.')
 
@@ -95,25 +93,28 @@ class SimulationGrasp(Node):
         for name, pose in zip(message.name, message.pose):
             if name.endswith('::gripper_base_link'):
                 self.gripper_pose = pose
-                break
+            elif name.endswith('::left_finger_link'):
+                self.left_finger_pose = pose
+            elif name.endswith('::right_finger_link'):
+                self.right_finger_pose = pose
 
     def models_callback(self, message):
         self.models = dict(zip(message.name, message.pose))
 
-    def joints_callback(self, message):
-        self.fingers.update(dict(zip(message.name, message.position)))
-
     def update(self):
-        if self.gripper_pose is None:
+        if (self.gripper_pose is None or self.left_finger_pose is None or
+                self.right_finger_pose is None):
             return
-        opening = max(self.fingers.get('left_finger_joint', 0.025),
-                      self.fingers.get('right_finger_joint', 0.025))
-        if self.attached_name and opening >= 0.016:
+        dx = self.left_finger_pose.position.x-self.right_finger_pose.position.x
+        dy = self.left_finger_pose.position.y-self.right_finger_pose.position.y
+        dz = self.left_finger_pose.position.z-self.right_finger_pose.position.z
+        finger_separation = math.sqrt(dx*dx+dy*dy+dz*dz)
+        if self.attached_name and finger_separation >= 0.075:
             self.get_logger().info(f'Released {self.attached_name}.')
             self.attached_name = None
             self.gripper_to_object = None
             return
-        if self.attached_name is None and opening <= 0.006:
+        if self.attached_name is None and finger_separation <= 0.060:
             candidates = []
             for name in TARGETS:
                 pose = self.models.get(name)
