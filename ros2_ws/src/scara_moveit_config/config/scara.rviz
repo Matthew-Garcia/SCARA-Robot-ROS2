@@ -11,15 +11,29 @@ Visualization Manager:
     Name: Grid
     Enabled: true
     Cell Size: 0.1
-  - Class: rviz_default_plugins/RobotModel
-    Name: Live Robot
-    Enabled: true
-    Robot Description: robot_description
-    TF Prefix: ''
-    Update Interval: 0
-    Visual Enabled: true
+  - Alpha: 1
+    Class: rviz_default_plugins/RobotModel
     Collision Enabled: false
-    Alpha: 1
+    Description File: ""
+    Description Source: Topic
+    Description Topic:
+      Depth: 5
+      Durability Policy: Transient Local
+      History Policy: Keep Last
+      Reliability Policy: Reliable
+      Value: /robot_description
+    Enabled: true
+    Links:
+      All Links Enabled: true
+      Expand Joint Details: false
+      Expand Link Details: false
+      Expand Tree: false
+      Link Tree Style: Links in Alphabetic Order
+    Name: Live Robot
+    TF Prefix: ""
+    Update Interval: 0
+    Value: true
+    Visual Enabled: true
   - Class: moveit_rviz_plugin/MotionPlanning
     Name: MotionPlanning
     Enabled: true
