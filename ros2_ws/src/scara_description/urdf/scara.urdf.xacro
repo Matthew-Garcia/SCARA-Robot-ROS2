@@ -107,6 +107,7 @@
   <parent link="gripper_base_link"/><child link="right_finger_link"/>
   <origin xyz="0.015122 0.015979 0"/>
   <axis xyz="0.687379 0.726299 0"/>
+  <mimic joint="left_finger_joint" multiplier="1.0" offset="0.0"/>
   <limit lower="0" upper="0.025" effort="40" velocity="0.16"/>
   <dynamics damping="0.2" friction="0.02"/>
 </joint>
@@ -119,7 +120,7 @@
 <joint name="elbow_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">0.0</param></state_interface><state_interface name="velocity"/></joint>
 <joint name="wrist_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">0.0</param></state_interface><state_interface name="velocity"/></joint>
 <joint name="left_finger_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">0.025</param></state_interface><state_interface name="velocity"/></joint>
-<joint name="right_finger_joint"><command_interface name="position"/><state_interface name="position"><param name="initial_value">0.025</param></state_interface><state_interface name="velocity"/></joint>
+<joint name="right_finger_joint"><param name="mimic">left_finger_joint</param><param name="multiplier">1.0</param><state_interface name="position"><param name="initial_value">0.025</param></state_interface><state_interface name="velocity"/></joint>
 </ros2_control>
 <xacro:if value="${mode == 'gazebo'}">
 <gazebo><plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so"><robot_param>robot_description</robot_param><robot_param_node>robot_state_publisher</robot_param_node><parameters>$(arg controllers_file)</parameters></plugin></gazebo>
