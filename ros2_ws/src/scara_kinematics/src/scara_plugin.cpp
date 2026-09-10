@@ -74,7 +74,7 @@ class ScaraPlugin : public kinematics::KinematicsBase {
     for(double v:q)if(!std::isfinite(v))return false;
     moveit::core::RobotState state(moveit::core::RobotModelConstPtr(model_, [](const moveit::core::RobotModel*) {}));state.setToDefaultValues();state.setJointGroupPositions(group_,q);state.update();
     poses.clear();
-    const auto base_inverse=state.getGlobalLinkTransform("base_link").inverse().eval();
+    const Eigen::Isometry3d base_inverse=state.getGlobalLinkTransform("base_link").inverse();
     for(const auto& name:names){
       if(!model_->hasLinkModel(name)) return false;
       const Eigen::Isometry3d T=base_inverse*state.getGlobalLinkTransform(name);Eigen::Quaterniond r(T.rotation());
