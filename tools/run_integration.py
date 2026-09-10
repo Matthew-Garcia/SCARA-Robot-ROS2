@@ -3,6 +3,7 @@
 import os
 import signal
 import subprocess
+import time
 from pathlib import Path
 for index,mode in enumerate(['mock','gazebo']):
     env={**os.environ,'ROS_DOMAIN_ID':str(201+index),'LIBGL_ALWAYS_SOFTWARE':'1','GAZEBO_MODEL_DATABASE_URI':''}
@@ -10,6 +11,9 @@ for index,mode in enumerate(['mock','gazebo']):
     with path.open('w') as log:
         launch=subprocess.Popen(['ros2','launch','scara_bringup','sim.launch.py',f'mode:={mode}','gui:=false','rviz:=false'],env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
         try:
+            # Humble controller_manager can abort if diagnostics call its
+            # services while the initial spawner is still configuring it.
+            time.sleep(15 if mode == 'gazebo' else 8)
             subprocess.run(['ros2','run','scara_bringup','check_stack.py'],env=env,check=True,timeout=180)
             if mode == 'gazebo':
                 subprocess.run(['ros2','run','scara_bringup','pick_lift_demo.py','--object','cube'],env=env,check=True,timeout=90)
