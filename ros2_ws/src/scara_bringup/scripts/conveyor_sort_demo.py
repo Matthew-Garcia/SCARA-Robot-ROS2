@@ -129,7 +129,7 @@ class ConveyorDemo(Node):
         self.send(self.gripper, FINGERS, [0.025, 0.025], 0.30)
         self.send(self.arm, ARM, self.joints_for(0.26, 0.11, 0.115), 0.80)
         self.send(self.arm, ARM, self.joints_for(0.26, 0.11, 0.072), 0.45)
-        self.send(self.gripper, FINGERS, [0.0, 0.0], 0.35)
+        self.send(self.gripper, FINGERS, [0.0235, 0.0235], 0.8)
         self.send(self.arm, ARM, self.joints_for(0.26, 0.11, 0.115), 0.50)
         self.wait_for_height(name, initial_z+0.025)
         target_x = BIN_X[color]

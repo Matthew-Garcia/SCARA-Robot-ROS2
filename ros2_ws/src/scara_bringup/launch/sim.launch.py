@@ -5,10 +5,10 @@ import yaml
 import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, OpaqueFunction, RegisterEventHandler, EmitEvent, LogInfo, SetEnvironmentVariable
-from launch.conditions import IfCondition
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction, RegisterEventHandler, EmitEvent, LogInfo, SetEnvironmentVariable
 from launch.events import Shutdown
 from launch.event_handlers import OnProcessExit
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -22,8 +22,7 @@ def setup(context):
     desc=Path(get_package_share_directory('scara_description'))
     bringup=Path(get_package_share_directory('scara_bringup'))
     moveit=Path(get_package_share_directory('scara_moveit_config'))
-    world_value=LaunchConfiguration('world').perform(context)
-    world_path=Path(world_value)
+    world_path=Path(LaunchConfiguration('world').perform(context))
     if not world_path.is_absolute():world_path=bringup/'worlds'/world_path
     controllers=str(bringup/'config/controllers.yaml')
     urdf=xacro.process_file(str(desc/'urdf/scara.urdf.xacro'),mappings={
@@ -45,6 +44,8 @@ def setup(context):
     gripper=Node(package='controller_manager',executable='spawner',arguments=['gripper_controller','--controller-manager-timeout','120'],output='screen')
     move_group=Node(package='moveit_ros_move_group',executable='move_group',parameters=params,output='screen')
     ready=[move_group,Node(package='scara_bringup',executable='scene_objects.py',parameters=[{'use_sim_time':sim,'dynamic_scene':sim}],output='screen')]
+    if sim:
+        ready.append(Node(package='scara_bringup',executable='simulation_grasp.py',parameters=[{'use_sim_time':True}],output='screen'))
     if rviz:ready.append(Node(package='rviz2',executable='rviz2',arguments=['-d',str(moveit/'config/scara.rviz')],parameters=params,output='screen'))
     def after_success(next_actions):
         def callback(event,context):
@@ -57,14 +58,10 @@ def setup(context):
              RegisterEventHandler(OnProcessExit(target_action=controller,on_exit=after_success([gripper]))),
              RegisterEventHandler(OnProcessExit(target_action=gripper,on_exit=after_success(ready))),publisher]
     if sim:
-        gazebo=ExecuteProcess(cmd=['gzserver',str(world_path),
-            '-s','libgazebo_ros_init.so','-s','libgazebo_ros_factory.so',
-            '-s','libgazebo_ros_force_system.so'],output='screen')
-        client=ExecuteProcess(cmd=['gzclient'],output='screen',condition=IfCondition(gui))
-        grasp=Node(package='scara_bringup',executable='simulation_grasp.py',
-                   parameters=[{'use_sim_time':True}],output='screen')
+        gazebo=IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('gazebo_ros'))/'launch/gazebo.launch.py')),
+            launch_arguments={'world':str(world_path),'gui':gui,'verbose':'false','pause':'false'}.items())
         spawn=Node(package='gazebo_ros',executable='spawn_entity.py',arguments=['-entity','scara','-topic','robot_description','-timeout','120'],output='screen')
-        actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,client,grasp,spawn]
+        actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,spawn]
     else:
         actions += [Node(package='controller_manager',executable='ros2_control_node',parameters=[robot,controllers,{'use_sim_time':False}],output='screen'),broadcaster]
     return actions
@@ -72,5 +69,4 @@ def setup(context):
 
 def generate_launch_description():
     return LaunchDescription([DeclareLaunchArgument('mode',default_value='gazebo',choices=['gazebo','mock']),
-       DeclareLaunchArgument('gui',default_value='true'),DeclareLaunchArgument('rviz',default_value='true'),
-       DeclareLaunchArgument('world',default_value='scara.world'),OpaqueFunction(function=setup)])
+       DeclareLaunchArgument('gui',default_value='true'),DeclareLaunchArgument('rviz',default_value='true'),DeclareLaunchArgument('world',default_value='scara.world'),OpaqueFunction(function=setup)])

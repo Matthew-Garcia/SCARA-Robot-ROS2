@@ -48,7 +48,6 @@ ROS 2 Humble simulation of the SCARA manipulator running in Gazebo and RViz2 wit
 | Manipulation scene | Four colored pickup solids, three Hanoi rings, placement tray, and matching MoveIt world | Scene parity and grasp integration checks included |
 | Embedded code | Original Arduino stepper/servo controller and Processing GUI | Preserved without modifying their behavior |
 | Gripper | Synchronized white sliding fingers with Gazebo attach/release behavior | Simulation pick/lift/release implemented; physical servo integration pending |
-| Vision conveyor demo | Separate overhead-camera world, OpenCV color detection, repeated red/green/blue sorting | Automated Humble/Gazebo validation included |
 
 Simulation mass properties and collision hulls are approximations. This project does not claim verified payload, torque, positioning accuracy, or a feedback-based physical ROS controller.
 
@@ -113,15 +112,6 @@ ros2 run scara_bringup gripper_command.py close
 ros2 run scara_bringup pick_lift_demo.py --object cube
 # Other choices: sphere, cylinder, hex
 ```
-
-The cube demo finishes by seating the red cube in the square pocket of the blue fixture. For the separate continuous computer-vision conveyor sorter:
-
-```bash
-ros2 launch scara_bringup conveyor_demo.launch.py
-# It repeats until Ctrl+C. For one cycle: cycles:=1
-```
-
-The overhead Gazebo camera feeds OpenCV HSV segmentation. Red, green, and blue cubes travel to the pickup point, are confirmed by vision, then are picked and placed into matching colored bins.
 
 The original robot has four controlled axes: shoulder rotation, vertical carriage motion, elbow rotation, and wrist yaw. Roll and pitch commands are unreachable.
 

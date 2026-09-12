@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(scara_bringup)
+
 find_package(ament_cmake REQUIRED)
+
 install(DIRECTORY launch config worlds models DESTINATION share/${PROJECT_NAME})
 
 set(SCARA_PY_SCRIPTS
@@ -9,10 +11,14 @@ set(SCARA_PY_SCRIPTS
   scene_objects.py
   gripper_command.py
   pick_lift_demo.py
+  simulation_grasp.py
   conveyor_vision.py
   conveyor_sort_demo.py
-  simulation_grasp.py
 )
+
+# Copy Python nodes into the build tree, mark the copies executable, and install
+# those copies. This keeps colcon --symlink-install working without modifying
+# executable bits on tracked source files (which previously made git pull fail).
 set(SCARA_PY_BUILD_SCRIPTS "")
 foreach(_script IN LISTS SCARA_PY_SCRIPTS)
   configure_file(
@@ -21,9 +27,14 @@ foreach(_script IN LISTS SCARA_PY_SCRIPTS)
     COPYONLY
   )
   file(CHMOD "${CMAKE_CURRENT_BINARY_DIR}/${_script}"
-    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-                GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    PERMISSIONS
+      OWNER_READ OWNER_WRITE OWNER_EXECUTE
+      GROUP_READ GROUP_EXECUTE
+      WORLD_READ WORLD_EXECUTE
+  )
   list(APPEND SCARA_PY_BUILD_SCRIPTS "${CMAKE_CURRENT_BINARY_DIR}/${_script}")
 endforeach()
+
 install(PROGRAMS ${SCARA_PY_BUILD_SCRIPTS} DESTINATION lib/${PROJECT_NAME})
+
 ament_package()

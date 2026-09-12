@@ -1,160 +1,230 @@
 #!/usr/bin/env python3
-"""Deterministic Gazebo coupling between the working fingers and scene props."""
+
 import math
-import time
 
 import rclpy
-from gazebo_msgs.msg import LinkStates, ModelState, ModelStates
-from gazebo_msgs.srv import SetModelState
-from geometry_msgs.msg import Pose
 from rclpy.node import Node
-from sensor_msgs.msg import JointState
 
-TARGETS = {
-    'pickup_cube', 'pickup_sphere', 'pickup_cylinder', 'pickup_hex_prism',
-    'hanoi_ring_large', 'hanoi_ring_medium', 'hanoi_ring_small',
-    'conveyor_cube_red', 'conveyor_cube_green', 'conveyor_cube_blue',
-}
+from gazebo_msgs.msg import ModelStates, LinkStates, EntityState
+from gazebo_msgs.srv import SetEntityState
 
 
-def quaternion(pose):
-    return (pose.orientation.x, pose.orientation.y,
-            pose.orientation.z, pose.orientation.w)
+TARGETS = [
+    'pickup_cube',
+    'pickup_sphere',
+    'pickup_cylinder',
+    'pickup_hex_prism',
+    'hanoi_ring_large',
+    'hanoi_ring_medium',
+    'hanoi_ring_small',
+    'conveyor_cube_red',
+    'conveyor_cube_green',
+    'conveyor_cube_blue',
+]
 
+# Link-origin separation is about 94 mm when completely open.
+# Attach before the CAD fingers physically squeeze the object.
+ATTACH_SEPARATION = 0.0926
+RELEASE_SEPARATION = 0.0935
 
-def multiply(a, b):
-    ax, ay, az, aw = a
-    bx, by, bz, bw = b
-    return (aw*bx+ax*bw+ay*bz-az*by,
-            aw*by-ax*bz+ay*bw+az*bx,
-            aw*bz+ax*by-ay*bx+az*bw,
-            aw*bw-ax*bx-ay*by-az*bz)
+# The finger link origins are above the actual gripping region.
+GRASP_Z_OFFSET = -0.090
 
-
-def conjugate(q):
-    return (-q[0], -q[1], -q[2], q[3])
-
-
-def rotate(q, xyz):
-    value = multiply(multiply(q, (*xyz, 0.0)), conjugate(q))
-    return value[:3]
-
-
-def relative(parent, child):
-    inverse = conjugate(quaternion(parent))
-    xyz = rotate(inverse, (child.position.x-parent.position.x,
-                           child.position.y-parent.position.y,
-                           child.position.z-parent.position.z))
-    q = multiply(inverse, quaternion(child))
-    result = Pose()
-    result.position.x, result.position.y, result.position.z = xyz
-    result.orientation.x, result.orientation.y = q[0], q[1]
-    result.orientation.z, result.orientation.w = q[2], q[3]
-    return result
-
-
-def compose(parent, child):
-    xyz = rotate(quaternion(parent),
-                 (child.position.x, child.position.y, child.position.z))
-    q = multiply(quaternion(parent), quaternion(child))
-    result = Pose()
-    result.position.x = parent.position.x+xyz[0]
-    result.position.y = parent.position.y+xyz[1]
-    result.position.z = parent.position.z+xyz[2]
-    result.orientation.x, result.orientation.y = q[0], q[1]
-    result.orientation.z, result.orientation.w = q[2], q[3]
-    return result
+MAX_XY_DISTANCE = 0.055
+MAX_Z_DISTANCE = 0.080
 
 
 class SimulationGrasp(Node):
+
     def __init__(self):
         super().__init__('scara_simulation_grasp')
-        self.gripper_pose = None
+
         self.models = {}
-        self.fingers = {'left_finger_joint': 0.025, 'right_finger_joint': 0.025}
+        self.links = {}
+
         self.attached = None
-        self.offset = None
+        self.hold_orientation = None
         self.pending = None
-        self.last_warning = 0.0
-        self.set_model = self.create_client(SetModelState, '/gazebo/set_model_state')
-        self.create_subscription(LinkStates, '/gazebo/link_states', self.links, 10)
-        self.create_subscription(ModelStates, '/gazebo/model_states', self.model_states, 10)
-        self.create_subscription(JointState, '/joint_states', self.joints, 10)
+
+        self.create_subscription(
+            ModelStates,
+            '/gazebo/model_states',
+            self.model_callback,
+            10,
+        )
+
+        self.create_subscription(
+            LinkStates,
+            '/gazebo/link_states',
+            self.link_callback,
+            10,
+        )
+
+        self.set_state = self.create_client(
+            SetEntityState,
+            '/gazebo/set_entity_state',
+        )
+
         self.create_timer(0.02, self.update)
-        self.get_logger().info('Deterministic Gazebo grasp coupling is ready.')
 
-    def links(self, message):
-        fingers = [pose for name, pose in zip(message.name, message.pose)
-                   if name.endswith('::left_finger_link') or
-                   name.endswith('::right_finger_link')]
-        if len(fingers) != 2:
-            return
-        midpoint = Pose()
-        midpoint.position.x = sum(p.position.x for p in fingers)/2.0
-        midpoint.position.y = sum(p.position.y for p in fingers)/2.0
-        midpoint.position.z = sum(p.position.z for p in fingers)/2.0
-        midpoint.orientation = fingers[0].orientation
-        self.gripper_pose = midpoint
+        self.get_logger().info(
+            'Simulation grasp helper ready - gentle pre-contact grasp enabled.'
+        )
 
-    def model_states(self, message):
-        self.models = dict(zip(message.name, message.pose))
+    def model_callback(self, msg):
+        self.models = dict(zip(msg.name, msg.pose))
 
-    def joints(self, message):
-        for name, position in zip(message.name, message.position):
-            if name in self.fingers:
-                self.fingers[name] = position
+    def link_callback(self, msg):
+        self.links = dict(zip(msg.name, msg.pose))
+
+    def find_link(self, link_name):
+        for name, pose in self.links.items():
+            if name == link_name or name.endswith('::' + link_name):
+                return pose
+        return None
+
+    @staticmethod
+    def distance(a, b):
+        return math.sqrt(
+            (a.position.x - b.position.x) ** 2 +
+            (a.position.y - b.position.y) ** 2 +
+            (a.position.z - b.position.z) ** 2
+        )
 
     def update(self):
-        if self.gripper_pose is None:
+        left = self.find_link('left_finger_link')
+        right = self.find_link('right_finger_link')
+
+        if left is None or right is None:
             return
-        opened = max(self.fingers.values()) >= 0.016
-        closed = max(self.fingers.values()) <= 0.006
-        if self.attached and opened:
-            self.get_logger().info(f'Released {self.attached}.')
-            self.attached, self.offset = None, None
+
+        separation = self.distance(left, right)
+
+        grasp_x = (left.position.x + right.position.x) * 0.5
+        grasp_y = (left.position.y + right.position.y) * 0.5
+        grasp_z = (
+            (left.position.z + right.position.z) * 0.5
+            + GRASP_Z_OFFSET
+        )
+
+        # RELEASE
+        if self.attached is not None:
+            if separation >= RELEASE_SEPARATION:
+                self.get_logger().info(
+                    f'Released {self.attached}'
+                )
+                self.attached = None
+                self.hold_orientation = None
+                return
+
+            self.hold_object(
+                grasp_x,
+                grasp_y,
+                grasp_z,
+            )
             return
-        if not self.attached and closed:
-            choices = []
-            for name in TARGETS:
-                pose = self.models.get(name)
-                if pose is None:
-                    continue
-                delta = (pose.position.x-self.gripper_pose.position.x,
-                         pose.position.y-self.gripper_pose.position.y,
-                         pose.position.z-self.gripper_pose.position.z)
-                choices.append((math.sqrt(sum(value*value for value in delta)), name, pose))
-            if choices:
-                distance, name, pose = min(choices)
-                if distance <= 0.100:
-                    self.attached = name
-                    self.offset = relative(self.gripper_pose, pose)
-                    self.get_logger().info(f'Attached {name} at {distance:.3f} m.')
-        if not self.attached or not self.set_model.service_is_ready():
+
+        # Gripper still too open.
+        if separation > ATTACH_SEPARATION:
             return
+
+        # Find the object closest to the gripping center.
+        candidate = None
+        best_distance = 999.0
+
+        for name in TARGETS:
+            pose = self.models.get(name)
+
+            if pose is None:
+                continue
+
+            dx = pose.position.x - grasp_x
+            dy = pose.position.y - grasp_y
+            dz = pose.position.z - grasp_z
+
+            xy = math.hypot(dx, dy)
+
+            if (
+                xy <= MAX_XY_DISTANCE
+                and abs(dz) <= MAX_Z_DISTANCE
+            ):
+                score = xy + 0.25 * abs(dz)
+
+                if score < best_distance:
+                    best_distance = score
+                    candidate = name
+
+        if candidate is None:
+            return
+
+        self.attached = candidate
+        pose = self.models[candidate]
+
+        self.hold_orientation = (
+            pose.orientation.x,
+            pose.orientation.y,
+            pose.orientation.z,
+            pose.orientation.w,
+        )
+
+        self.get_logger().info(
+            f'Attached {candidate} before finger contact '
+            f'(finger separation {separation:.3f} m)'
+        )
+
+        self.hold_object(
+            grasp_x,
+            grasp_y,
+            grasp_z,
+        )
+
+    def hold_object(self, x, y, z):
+        if self.attached is None:
+            return
+
+        if not self.set_state.service_is_ready():
+            return
+
         if self.pending is not None and not self.pending.done():
             return
-        if self.pending is not None and self.pending.done():
-            response = self.pending.result()
-            if (response is None or not response.success) and time.monotonic()-self.last_warning > 2.0:
-                self.last_warning = time.monotonic()
-                self.get_logger().warning('Gazebo rejected a carried-object pose update.')
-        request = SetModelState.Request()
-        request.model_state = ModelState()
-        request.model_state.model_name = self.attached
-        request.model_state.reference_frame = 'world'
-        request.model_state.pose = compose(self.gripper_pose, self.offset)
-        self.pending = self.set_model.call_async(request)
+
+        state = EntityState()
+
+        state.name = self.attached
+        state.reference_frame = 'world'
+
+        state.pose.position.x = x
+        state.pose.position.y = y
+        state.pose.position.z = z
+
+        if self.hold_orientation is not None:
+            (
+                state.pose.orientation.x,
+                state.pose.orientation.y,
+                state.pose.orientation.z,
+                state.pose.orientation.w,
+            ) = self.hold_orientation
+        else:
+            state.pose.orientation.w = 1.0
+
+        request = SetEntityState.Request()
+        request.state = state
+
+        self.pending = self.set_state.call_async(request)
 
 
 def main():
     rclpy.init()
+
     node = SimulationGrasp()
+
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
     finally:
         node.destroy_node()
+
         if rclpy.ok():
             rclpy.shutdown()
 

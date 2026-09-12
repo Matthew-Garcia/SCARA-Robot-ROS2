@@ -1053,24 +1053,12 @@ objects:
   - 1
   mesh: model://hanoi_ring_small/meshes/ring.stl
 - name: placement_tray
-  pose: [0.27, -0.035, 0.047, 0, 0, 0]
+  pose: [0.27, -0.035, 0.049, 0, 0, 0]
   static: true
   shapes:
   - type: box
-    size: [0.24, 0.070, 0.004]
+    size: [0.24, 0.070, 0.010]
     pose: [0, 0, 0, 0, 0, 0]
-  - type: box
-    size: [0.050, 0.006, 0.008]
-    pose: [-0.090, 0.022, 0.006, 0, 0, 0]
-  - type: box
-    size: [0.050, 0.006, 0.008]
-    pose: [-0.090, -0.022, 0.006, 0, 0, 0]
-  - type: box
-    size: [0.006, 0.038, 0.008]
-    pose: [-0.068, 0, 0.006, 0, 0, 0]
-  - type: box
-    size: [0.006, 0.038, 0.008]
-    pose: [-0.112, 0, 0.006, 0, 0, 0]
   color: [0.02, 0.35, 1.0, 1]
 - name: pickup_cylinder
   pose: [0.205, 0.135, 0.062, 0, 0, 0]
