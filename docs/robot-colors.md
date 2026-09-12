@@ -8,13 +8,13 @@ Materials are assigned from the original STEP export manifest, not inferred from
 
 `color_parts.py` splits the existing binary STL triangle records by these named CAD components. It does not change triangle coordinates, collision geometry, inertias, actuator joints, or the working ZIP's gripper.
 
-Fixed visual-only child links give Gazebo explicit materials per color group. Gazebo reduces them into their physical parents. RViz uses the corresponding URDF RGBA colors. This replaces the previous shoulder Collada approach that displayed gray in Gazebo.
+RViz uses URDF RGBA colors. Gazebo Classic can lose material extensions when reducing the fixed visual links. The simulation launch now converts the same URDF with `gz sdf -p`, then assigns native SDF ambient/diffuse colors to each mesh before spawning that SDF. It checks that every colored mesh survived conversion; physics and controller plugins remain in the converted model.
 
-Rebuild `scara_description` after updating, source the newly built workspace, and restart Gazebo/RViz so the robot is spawned from the new description:
+Update the source, rebuild **both** packages, and close/restart the simulation:
 
 ```bash
 source /opt/ros/humble/setup.bash
-colcon build --symlink-install --packages-select scara_description
+colcon build --symlink-install --packages-select scara_description scara_bringup
 source install/setup.bash
 ros2 launch scara_bringup sim.launch.py
 ```

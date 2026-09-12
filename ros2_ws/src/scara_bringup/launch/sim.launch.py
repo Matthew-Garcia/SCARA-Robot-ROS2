@@ -1,13 +1,15 @@
 """Humble: Gazebo Classic or mock ros2_control, MoveIt 2 and RViz2."""
 from pathlib import Path
 import os
+import runpy
+import tempfile
 import yaml
 import xacro
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction, RegisterEventHandler, EmitEvent, LogInfo, SetEnvironmentVariable
 from launch.events import Shutdown
-from launch.event_handlers import OnProcessExit
+from launch.event_handlers import OnProcessExit, OnShutdown
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -60,7 +62,17 @@ def setup(context):
     if sim:
         gazebo=IncludeLaunchDescription(PythonLaunchDescriptionSource(str(Path(get_package_share_directory('gazebo_ros'))/'launch/gazebo.launch.py')),
             launch_arguments={'world':str(world_path),'gui':gui,'verbose':'false','pause':'false'}.items())
-        spawn=Node(package='gazebo_ros',executable='spawn_entity.py',arguments=['-entity','scara','-topic','robot_description','-timeout','120'],output='screen')
+        # Color the final SDF after fixed-joint reduction, not just the RViz URDF.
+        converter=runpy.run_path(str(bringup/'launch/gazebo_materials.py'))
+        sdf=converter['build_gazebo_sdf'](urdf)
+        model_directory=tempfile.TemporaryDirectory(prefix='scara-gazebo-')
+        model_path=Path(model_directory.name)/'scara.sdf'
+        model_path.write_text(sdf)
+        def cleanup_model(context):
+            model_directory.cleanup()
+            return []
+        actions.append(RegisterEventHandler(OnShutdown(on_shutdown=[OpaqueFunction(function=cleanup_model)])))
+        spawn=Node(package='gazebo_ros',executable='spawn_entity.py',arguments=['-entity','scara','-file',str(model_path),'-timeout','120'],output='screen')
         actions += [RegisterEventHandler(OnProcessExit(target_action=spawn,on_exit=after_success([broadcaster]))),gazebo,spawn]
     else:
         actions += [Node(package='controller_manager',executable='ros2_control_node',parameters=[robot,controllers,{'use_sim_time':False}],output='screen'),broadcaster]
