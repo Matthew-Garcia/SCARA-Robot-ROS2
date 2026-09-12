@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           source /opt/ros/humble/setup.bash
-          python3 ros2_ws/src/scara_description/color_shoulder.py ros2_ws/src/scara_description/meshes/shoulder_link.stl ros2_ws/src/scara_description/meshes/shoulder_colored.dae
+          python3 ros2_ws/src/scara_description/color_parts.py ros2_ws/src/scara_description ros2_ws/src/scara_description/meshes
           python3 -m pytest -q ros2_ws/tests
           g++ -std=c++17 -Wall -Wextra -pedantic -I ros2_ws/src/scara_kinematics/include ros2_ws/tests/test_analytic.cpp -o /tmp/test_analytic
           /tmp/test_analytic

@@ -11,14 +11,7 @@
     <child link="base_link"/>
   </joint>
   <link name="base_link">
-    <visual>
-      <geometry>
-        <mesh filename="file://$(arg description_share)/meshes/base_link.stl"/>
-      </geometry>
-      <material name="base_link_color">
-        <color rgba="0.02 0.28 0.82 1"/>
-      </material>
-    </visual>
+
     <collision>
       <geometry>
         <mesh filename="file://$(arg description_share)/meshes/base_link_collision_000.stl"/>
@@ -46,11 +39,7 @@
     </inertial>
   </link>
   <link name="shoulder_link">
-    <visual>
-      <geometry>
-        <mesh filename="file://$(arg description_share)/meshes/shoulder_colored.dae"/>
-      </geometry>
-    </visual>
+
     <collision>
       <geometry>
         <mesh filename="file://$(arg description_share)/meshes/shoulder_link_collision_010.stl"/>
@@ -108,14 +97,7 @@
     </inertial>
   </link>
   <link name="arm1_link">
-    <visual>
-      <geometry>
-        <mesh filename="file://$(arg description_share)/meshes/arm1_link.stl"/>
-      </geometry>
-      <material name="arm1_link_color">
-        <color rgba="0.02 0.28 0.82 1"/>
-      </material>
-    </visual>
+
     <collision>
       <geometry>
         <mesh filename="file://$(arg description_share)/meshes/arm1_link_collision_028.stl"/>
@@ -143,14 +125,7 @@
     </inertial>
   </link>
   <link name="arm2_link">
-    <visual>
-      <geometry>
-        <mesh filename="file://$(arg description_share)/meshes/arm2_link.stl"/>
-      </geometry>
-      <material name="arm2_link_color">
-        <color rgba="0.02 0.28 0.82 1"/>
-      </material>
-    </visual>
+
     <collision>
       <geometry>
         <mesh filename="file://$(arg description_share)/meshes/arm2_link_collision_032.stl"/>
@@ -537,22 +512,22 @@
     </gazebo>
     <gazebo reference="base_link">
       <selfCollide>false</selfCollide>
-      <material>Gazebo/Blue</material>
+
     </gazebo>
     <gazebo reference="shoulder_link">
       <selfCollide>false</selfCollide>
     </gazebo>
     <gazebo reference="arm1_link">
       <selfCollide>false</selfCollide>
-      <material>Gazebo/Blue</material>
+
     </gazebo>
     <gazebo reference="arm2_link">
       <selfCollide>false</selfCollide>
-      <material>Gazebo/Blue</material>
+
     </gazebo>
     <gazebo reference="tool_link">
       <selfCollide>false</selfCollide>
-      <material>Gazebo/White</material>
+
     </gazebo>
     <gazebo reference="gripper_base_link">
       <selfCollide>false</selfCollide>
@@ -567,4 +542,5 @@
       <material>Gazebo/White</material>
     </gazebo>
   </xacro:if>
+  <xacro:include filename="$(arg description_share)/meshes/colored_visuals.xacro"/>
 </robot>
