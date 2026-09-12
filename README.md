@@ -16,8 +16,7 @@ Physical four-axis SCARA manipulator demonstrating basic joint motion and operat
 
 ### ROS 2 Gazebo + RViz2 Simulation
 
-![SCARA Robot Gazebo Simulation](media/original/Scara_Robot_Gazebo.mp4)
-
+[Watch the SCARA Robot Pick-and-Place Demonstration](media/original/SCARA_Robot_Gazebo.webm)
 
 ROS 2 Humble simulation of the SCARA manipulator running in Gazebo and RViz2 with `ros2_control` and MoveIt 2 for joint control, motion planning, and trajectory execution.
 
