@@ -158,7 +158,7 @@
         <mesh filename="file://$(arg description_share)/meshes/tool_link_collision_049.stl"/>
       </geometry>
       <material name="tool_link_white">
-        <color rgba="0.95 0.95 0.95 1"/>
+        <color rgba="0.02 0.28 0.82 1"/>
       </material>
     </visual>
     <visual>
@@ -174,7 +174,7 @@
         <mesh filename="file://$(arg description_share)/meshes/tool_link_collision_059.stl"/>
       </geometry>
       <material name="tool_link_white_3">
-        <color rgba="0.95 0.95 0.95 1"/>
+        <color rgba="0.02 0.02 0.02 1"/>
       </material>
     </visual>
     <collision>
@@ -250,7 +250,7 @@
         <mesh filename="file://$(arg description_share)/meshes/tool_link_collision_063.stl"/>
       </geometry>
       <material name="gripper_cad_white_2">
-        <color rgba="1 1 1 1"/>
+        <color rgba="0.75 0.78 0.82 1"/>
       </material>
     </visual>
     <visual>
@@ -258,7 +258,7 @@
         <mesh filename="file://$(arg description_share)/meshes/tool_link_collision_066.stl"/>
       </geometry>
       <material name="gripper_cad_white_3">
-        <color rgba="1 1 1 1"/>
+        <color rgba="0.75 0.78 0.82 1"/>
       </material>
     </visual>
     <visual>

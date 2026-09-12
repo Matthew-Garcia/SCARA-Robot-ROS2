@@ -4,6 +4,9 @@ Materials are assigned from the original STEP export manifest, not inferred from
 
 - Four NEMA 17 instances (indices 1, 27, 38, 48): black.
 - Four Smooth Rod D10mm L400mm instances (12–15): light gray.
+- J1 coupler (10) and J3 Coupler (49): blue.
+- Both Gripper rail 6mm instances (63, 66): light gray.
+- Servo Motor MG996R 3D Model (59): black; servo horn retains its existing color.
 - Z-axis Bottom Plate (11), Z-axis Top Plate (20), Base cover (79), Top cover (80): blue.
 
 `color_parts.py` splits the existing binary STL triangle records by these named CAD components. It does not change triangle coordinates, collision geometry, inertias, actuator joints, or the working ZIP's gripper.

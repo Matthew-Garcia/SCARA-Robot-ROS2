@@ -23,7 +23,7 @@ def generate(source, output):
                 color = 'black'; counts['motors'] += 1
             elif 'smooth rod d10mm l400mm' in name:
                 color = 'grey'; counts['rods'] += 1
-            elif link == 'shoulder_link' and any(s in name for s in ['z-axis top plate', 'z-axis bottom plate', 'top cover', 'base cover']):
+            elif link == 'shoulder_link' and any(s in name for s in ['z-axis top plate', 'z-axis bottom plate', 'top cover', 'base cover', 'j1 coupler']):
                 color = 'blue'
             length = part['triangles']*50
             buckets.setdefault(color, bytearray()).extend(raw[offset:offset+length])
