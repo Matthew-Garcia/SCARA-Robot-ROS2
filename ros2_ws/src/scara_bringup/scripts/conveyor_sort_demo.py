@@ -59,8 +59,13 @@ class ConveyorDemo(Node):
             raise RuntimeError('trajectory was rejected')
         result = handle.get_result_async()
         rclpy.spin_until_future_complete(self, result, timeout_sec=seconds+15)
-        if not result.done() or result.result().result.error_code != 0:
-            raise RuntimeError('trajectory execution failed')
+        if not result.done():
+            client_goal_cancel = handle.cancel_goal_async()
+            rclpy.spin_until_future_complete(self, client_goal_cancel, timeout_sec=2)
+            raise RuntimeError(f'{joints}: trajectory result timed out')
+        outcome = result.result().result
+        if outcome.error_code != 0:
+            raise RuntimeError(f'{joints}: trajectory failed ({outcome.error_code}): {outcome.error_string}')
 
     @staticmethod
     def joints_for(x, y, tcp_z):
@@ -133,7 +138,8 @@ class ConveyorDemo(Node):
         self.send(self.arm, ARM, self.joints_for(0.26, 0.11, 0.115), 0.50)
         self.wait_for_height(name, initial_z+0.025)
         target_x = BIN_X[color]
-        self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.115), 0.85)
+        # Allow the wrist to track the larger belt-to-bin rotation.
+        self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.115), 2.5)
         self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.062), 0.45)
         self.send(self.gripper, FINGERS, [0.025, 0.025], 0.30)
         self.send(self.arm, ARM, self.joints_for(target_x, -0.12, 0.115), 0.45)
