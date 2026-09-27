@@ -20,6 +20,24 @@ https://github.com/user-attachments/assets/89df4c2b-f115-45a7-ac97-08524b306595
 
 ROS 2 Humble simulation of the SCARA manipulator running in Gazebo and RViz2 with `ros2_control` and MoveIt 2 for joint control, motion planning, and trajectory execution.
 
+## Computer vision — in development
+
+An overhead camera detects the blue cylinder and supports calibration and experimental pick-and-place planning for the physical SCARA robot. The [vision folder](vision/) includes detection previews, calibration tools, taught-position trials, camera-guided scripts, and tests.
+
+**Status: in development.** Camera-to-robot calibration and pickup accuracy are still being refined; automatic placement is not yet validated for reliable operation.
+
+### Blue-cylinder detection
+
+![Blue-cylinder detection preview with the calibrated workspace outline](vision/images/blue-cylinder-detection.png)
+
+Development screenshot showing the detected cylinder, workspace outline, and estimated target position.
+
+### Overhead camera setup
+
+![Physical SCARA robot with the overhead camera mounted above the work area](vision/images/overhead-camera-setup.png)
+
+The camera is mounted above the tabletop to observe the pickup area beside the robot and puzzle tray.
+
 ## CAD Model
 
 ![Original SCARA CAD model](docs/images/scara_cad_preview.png)

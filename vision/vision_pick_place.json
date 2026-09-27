@@ -1,0 +1,35 @@
+{
+  "_note": "Settings for calibrate_by_placing.py and run_vision_pick_place.py. Joint values are in the Processing GUI frame.",
+  "park_pose": {"j1": 0, "j2": 0, "j3": 0, "z": 0},
+  "_park_note": "Park = the repeatable pose the arm is in when the controller powers on/resets (GUI all zeros). The camera must see the cylinder with the arm here.",
+  "travel_z_mm": 0,
+  "pick_z_mm": 11,
+  "pick_j3": 0,
+  "elbow_sign": 0,
+  "_elbow_note": "0 = either elbow direction, choosing the least joint travel from park. 1 or -1 forces the sign of GUI J2.",
+  "gripper_open": -83,
+  "gripper_hold": 164,
+  "drop_exclusion_mm": 25,
+  "hull_margin_px": 20,
+  "max_rounding_error_mm": 3.0,
+  "max_calibration_error_mm": 5.0,
+  "detection": {
+    "hue_min": 95,
+    "hue_max": 135,
+    "saturation_min": 80,
+    "brightness_min": 45,
+    "area_min": 350,
+    "area_max": 7000,
+    "roundness_min": 0.45
+  },
+  "stability": {"frames": 8, "tolerance_px": 8},
+  "timing": {
+    "max_speed_steps_s": 4000,
+    "accel_steps_s2": 2000,
+    "serial_parse_s": 1.0,
+    "firmware_delay_s": 0.2,
+    "gripper_settle_s": 0.6,
+    "safety_factor": 1.5,
+    "margin_s": 0.5
+  }
+}
