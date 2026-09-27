@@ -1,15 +1,4 @@
 """Camera-guided pick and place: find the blue cylinder, pick it, drop it in the hole.
-
-Preview (default): camera + plan only; no serial port is opened.
-  python run_vision_pick_place.py
-  python run_vision_pick_place.py --test-pixel 320 240     (plan only, no camera)
-Supervised, each step confirmed (use this first):
-  python run_vision_pick_place.py --execute --port COM3
-Timed, one confirmation per cycle (after step mode has worked):
-  python run_vision_pick_place.py --execute --port COM3 --auto
-
-Firmware and Processing are unchanged. The firmware has no completion feedback
-and no software stop: keep the physical power cutoff within reach.
 """
 
 import argparse
