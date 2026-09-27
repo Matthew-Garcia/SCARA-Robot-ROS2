@@ -20,11 +20,26 @@ https://github.com/user-attachments/assets/89df4c2b-f115-45a7-ac97-08524b306595
 
 ROS 2 Humble simulation of the SCARA manipulator running in Gazebo and RViz2 with `ros2_control` and MoveIt 2 for joint control, motion planning, and trajectory execution.
 
-## Computer vision — in development
+## Computer vision — camera-guided pick and place (in development)
 
-An overhead camera detects the blue cylinder and supports calibration and experimental pick-and-place planning for the physical SCARA robot. The [vision folder](vision/) includes detection previews, calibration tools, taught-position trials, camera-guided scripts, and tests.
+An overhead camera finds the blue cylinder on the table, converts its position into
+joint angles, and the physical robot picks it up and drops it into the puzzle tray,
+then returns to its start pose. Everything runs from Python on Windows over the
+existing serial protocol; the original Arduino firmware and Processing GUI are unchanged.
 
-**Status: in development.** Camera-to-robot calibration and pickup accuracy are still being refined; automatic placement is not yet validated for reliable operation.
+**How it works**
+
+- **Detection:** OpenCV color and shape filtering finds the cylinder and waits until it is stationary.
+- **Calibration:** the robot places the cylinder at 8–12 spots; each camera pixel is paired with the
+  joint angles used, and a homography maps pixels straight into the robot's own frame.
+  No hand measurement is needed, and the mapping is taken at cylinder-top height.
+- **Planning:** inverse kinematics picks whole-degree joint angles (the firmware's resolution),
+  preferring the elbow direction used by the nearest calibration point.
+- **Execution:** a 10-step pick → lift → drop → return sequence, in step-by-step or timed auto mode.
+
+**Status:** full pick-and-place cycles run end to end on the real robot.
+
+See [`vision/VISION_PICK_PLACE.md`](vision/VISION_PICK_PLACE.md) for setup and usage.
 
 ### Blue-cylinder detection
 
